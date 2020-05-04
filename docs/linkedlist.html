@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | linkedlist.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        .heading{
+            margin-top: 20px;
+            border-next: 2px solid black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 0.5px solid black;
+            font-family: 'Libre Baskerville', serif;
+        }
+        table{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/linkedlist.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Doubly-linked-list implementation of list! Implements all optional list operations and permits all elements including NULL!<br>
+        linkedlist is <strong>not syncronized</strong>!<br>
+        All memory allocation operations are done on heap!<br>
+        Time and space complexity of operations are described below!<br>
+    </p>
+    <br>
+    The following example uses wrapper (from wrapper.h) for creating an linked list of integers!
+    <pre><code class="c">
+            // seed random number generator from random.h
+            randomize();
+
+            // create a new empty linked list of initial capacity 5
+            LinkedList *list = create_empty_linked_list(5);
+
+            // insert 7 elements in linked list in range [0...100]
+            // note that size of the list will be expanded i.e. doubled when needed
+            for (int i = 0; i < 7; ++i)
+                linked_list_insert_back(list, wrap_int(random_int_upper_bound(100)));
+
+            // prints the content of linked list to console using iterators
+            printlinkedList(list);
+
+            // delete the node with value 10 from list if exist
+            // note the use of parameters free_key and free_list_key set to true
+            bool deletionResult = linked_list_delete(list, wrap_int(10), compare_callback, true, true);
+            // free_key set to true means the memory which is allocated on heap for wrapped integer will be freed at the end
+            // and free_list_key set to true means that memory which was allocated on heap for wrapped integer while insertion should be freed
+            /*free key options are supplied with primitive types and wrappers in mind*/
+        </code></pre>
+
+    The following piece of code uses linked list iterator to traverse the linked list (note the use of wrapper.h again)
+    <pre><code class="c">
+            // prints the content of linked list to console
+            void printlinkedList(LinkedList* list){
+
+                // print size and capacity of list to console
+                printf ("List(%d/%d): ", list->size, list->capacity);
+
+                // create a new linked list iterator associated with given list
+                LinkedListIterator* iterator = create_linked_list_iterator(list);
+
+                // iterate as long as we have a next node
+                while (linked_list_iterator_has_next(iterator))
+                    printf ("%d ", wrapped_int_value(linked_list_iterator_next(iterator)));
+
+                // free memory allocated to iterator
+                free_linked_list_iterator(iterator);
+            }
+        </code></pre>
+
+    The following piece of code shows the example of callback (type included from utilitytypes.h)
+    <pre><code class="c">
+        /*returns -1, 0 or 1 according to if key1 is less than, equal or gerater than key2*/
+        int compare_callback(void* key1, void* key2){
+
+            // first we cast key1 and key2 pointers to their original types (int in this case)
+            int val1 = *((int*)key1);
+            int val2 = *((int*)key2);
+
+            // next we perform a comparison and return the result back
+            return (val1 > val2 ? 1  : val1 == val2 ? 0 : -1);
+        }
+    </code></pre>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
+    <table>
+        <tbody>
+        <tr><td><a  href="#create_empty_linked_list">LinkedList* create_empty_linked_list (int initial_capacity);</a></td></tr>
+        <tr><td><a  href="#linked_list_insert_at">bool linked_list_insert_at (LinkedList* list, void* value, int index);</a></td></tr>
+        <tr><td><a  href="#linked_list_insert_front">bool linked_list_insert_front (LinkedList* list, void* value);</a></td></tr>
+        <tr><td><a  href="#linked_list_insert_back">bool linked_list_insert_back (LinkedList* list, void* value);</a></td></tr>
+        <tr><td><a  href="#linked_list_delete_at">void* linked_list_delete_at (LinkedList* list, int index);</a></td></tr>
+        <tr><td><a  href="#linked_list_delete_front">void* linked_list_delete_front (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_delete_back">void* linked_list_delete_back (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_delete">bool linked_list_delete(LinkedList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</a></td></tr>
+        <tr><td><a  href="#linked_list_delete_all">int linked_list_delete_all(LinkedList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</a></td></tr>
+        <tr><td><a  href="#linked_list_contains">bool linked_list_contains (LinkedList* list, void* key, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#linked_list_contains_and_free_key">bool linked_list_contains_and_free_key (LinkedList* list, void* key, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#linked_list_indexOf">int linked_list_indexOf (LinkedList* list, void* key, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#linked_list_indexOf_and_free_key">int linked_list_indexOf_and_free_key (LinkedList* list, void* key, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#linked_list_value_at">void* linked_list_value_at (LinkedList* list, int index);</a></td></tr>
+        <tr><td><a  href="#linked_list_front">void* linked_list_front (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_back">void* linked_list_back (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_is_empty">bool linked_list_is_empty (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_size">int linked_list_size (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_equals">bool linked_list_equals (LinkedList* list1, LinkedList* list2, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#linked_list_reverse">void linked_list_reverse(LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_sort">bool linked_list_sort (LinkedList* list, utility_compare compare_callback);</a></td></tr>
+        <tr><td><a  href="#clear_linked_list">void clear_linked_list (LinkedList*  list, bool free_key);</a></td></tr>
+        <tr><td><a  href="#free_linked_list">void free_linked_list (LinkedList*  list, bool free_key);</a>
+        <tr><td><a  href="#create_linked_list_iterator">LinkedListIterator* create_linked_list_iterator (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#create_linked_list_reverse_iterator">LinkedListIterator* create_linked_list_reverse_iterator (LinkedList* list);</a></td></tr>
+        <tr><td><a  href="#linked_list_iterator_has_next">bool linked_list_iterator_has_next (LinkedListIterator* iterator);</a></td></tr>
+        <tr><td><a  href="#linked_list_iterator_has_previous">bool linked_list_iterator_has_previous (LinkedListIterator* iterator);</a></td></tr>
+        <tr><td><a  href="#linked_list_iterator_next">void* linked_list_iterator_next (LinkedListIterator* iterator);</a></td></tr>
+        <tr><td><a  href="#linked_list_iterator_previous">void* linked_list_iterator_previous (LinkedListIterator* iterator);</a>
+        <tr><td><a  href="#reset_linked_list_iterator">void reset_linked_list_iterator (LinkedListIterator* iterator);</a></td></tr>
+        <tr><td><a  href="#free_linked_list_iterator">void free_linked_list_iterator (LinkedListIterator* iterator);</a></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function description</h5>
+    <div class="function-description">
+        <table id="create_empty_linked_list">
+            <tr style="background: #F0F0F0">
+                <th>LinkedList* create_empty_linked_list (int initial_capacity);</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a new linked list on heap</li>
+                <li>returns pointer to newly created linkedlist if succeeds otherwise returns NULL</li>
+                <li>asserts that initial capacity is a positive integer</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_insert_at">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_insert_at (LinkedList* list, void* value, int index);</th>
+            </tr>
+            <tr><td><ul>
+                <li>inserts value at given index in linked list</li>
+                <li>available indices are [0...N] where N is the size of the list</li>
+                <li>returns true if succeeds otherwise returns false</li>
+                <li>asserts that list, list's linked aren't NULL and index is in bound</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_insert_front">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_insert_front (LinkedList* list, void* value);</th>
+            </tr>
+            <tr><td><ul>
+                <li>inserts value at front of linked list</li>
+                <li>returns true if succeeds otherwise returns false</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_insert_back">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_insert_back (LinkedList* list, void* value);</th>
+            </tr>
+            <tr><td><ul>
+                <li>inserts value at back of linked list</li>
+                <li>returns true if succeeds otherwise returns false</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes amortized constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_delete_at">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_list_delete_at (LinkedList* list, int index);</th>
+            </tr>
+            <tr><td><ul>
+                <li>deletes value at given index in linked list</li>
+                <li>available indices are [0...N-1] where N is the size of the list</li>
+                <li>returns the value at given index</li>
+                <li>asserts that list, list's linked aren't NULL and index is in bound</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_delete_front">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_list_delete_front (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>deletes value from front of linked list</li>
+                <li>returns the value at given index if exist otherwise returns NULL</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_delete_back">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_list_delete_back (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>deletes value from back of linked list</li>
+                <li>returns the value at given index if exist otherwise returns NULL</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes amortized constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_delete">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_delete(LinkedList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>deletes the 1st occurrence of key in linked list if exist</li>
+                <li>optionally frees the memory allocated to key and value in linked list</li>
+                <li>returns true if deletion succeeds otherwise returns false</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_delete_all">
+            <tr style="background: #F0F0F0">
+                <th>int linked_list_delete_all(LinkedList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>deletes all occurrences of key in linked list if exist</li>
+                <li>optionally frees the memory allocated to key and value in linked list</li>
+                <li>returns the count of number of items deleted in linked list</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_contains">
+            <tr style="background: #F0F0F0">
+                <th> bool linked_list_contains (LinkedList* list, void* key, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>searches for key in given linked list</li>
+                <li>returns true if key exist in linked list otherwise returns false</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_contains_and_free_key">
+            <tr style="background: #F0F0F0">
+                <th> bool linked_list_contains_and_free_key (LinkedList* list, void* key, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>searches for key in given linked list</li>
+                <li>frees the memory allocated to key as operation finishes</li>
+                <li>returns true if key exist in linked list otherwise returns false</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_indexOf">
+            <tr style="background: #F0F0F0">
+                <th> int linked_list_indexOf (LinkedList* list, void* key, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>searches for key in given linked list</li>
+                <li>returns the index of 1st occurrence of key in linked list if exist otherwise returns -1</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_indexOf_and_free_key">
+            <tr style="background: #F0F0F0">
+                <th> int linked_list_indexOf_and_free_key (LinkedList* list, void* key, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>searches for key in given linked list</li>
+                <li>frees the memory allocated to key as operation finishes</li>
+                <li>returns the index of 1st occurrence of key in linked list if exist otherwise returns -1</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_value_at">
+            <tr style="background: #F0F0F0">
+                <th> void* linked_list_value_at (LinkedList* list, int index);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value at given index in linked list</li>
+                <li>asserts that list, list's linked aren't NULL and index is in bound</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_front">
+            <tr style="background: #F0F0F0">
+                <th> void* linked_list_front (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value at front of linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_back">
+            <tr style="background: #F0F0F0">
+                <th> void* linked_list_back (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value at back of linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_is_empty">
+            <tr style="background: #F0F0F0">
+                <th> bool linked_list_is_empty (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if linkedlist is empty otherwise returns false</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_size">
+            <tr style="background: #F0F0F0">
+                <th> int linked_list_size (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the size of the linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_equals">
+            <tr style="background: #F0F0F0">
+                <th> bool linked_list_equals (LinkedList* list1, LinkedList* list2, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if content of two lists are same</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_reverse">
+            <tr style="background: #F0F0F0">
+                <th> void linked_list_reverse (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>reverses the content of linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_sort">
+            <tr style="background: #F0F0F0">
+                <th> bool linked_list_sort (LinkedList* list, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>uses merge-sort algorithm to sort the content of linked list according to callback</li>
+                <li>returns true if successfully sorts the linkedlist otherwise returns false</li>
+                <li>asserts that list, list's linked and callback aren't NULL</li>
+                <li>takes linearithmic (n lgn) time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="clear_linked_list">
+            <tr style="background: #F0F0F0">
+                <th> void clear_linked_list (LinkedList* list, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>clears the content of linked lisy</li>
+                <li>optionally frees the memory allocated to values in linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_list">
+            <tr style="background: #F0F0F0">
+                <th> void free_linked_list (LinkedList* list, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>frees the memory allocated to linked lisy</li>
+                <li>optionally frees the memory allocated to values in linked list</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes linear time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="create_linked_list_iterator">
+            <tr style="background: #F0F0F0">
+                <th>LinkedListIterator* create_linked_list_iterator (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates an iterator associated with given linked list</li>
+                <li>returns a pointer to newly created iterator if succeeds otherwise returns NULL</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="create_linked_list_reverse_iterator">
+            <tr style="background: #F0F0F0">
+                <th>LinkedListIterator* create_linked_list_reverse_iterator (LinkedList* list);</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a reverse iterator associated with given linked list</li>
+                <li>returns a pointer to newly created iterator if succeeds otherwise returns NULL</li>
+                <li>asserts that list, list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_iterator_has_next">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_iterator_has_next (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if iterator can move to next node from current node</li>
+                <li>asserts that iterator, iterator'list, iterator'list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_iterator_has_previous">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_list_iterator_has_previous (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if iterator can move to previous node from current node</li>
+                <li>asserts that iterator, iterator'list, iterator'list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_iterator_next">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_list_iterator_next (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value of the current node and move iterator to next node</li>
+                <li>asserts that iterator, iterator'list, iterator'list's linked aren't NULL and iterator's next node exist</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_list_iterator_previous">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_list_iterator_previous (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value of the current node and move iterator to previous node</li>
+                <li>asserts that iterator, iterator'list, iterator'list's linked aren't NULL and iterator's previous node exist</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="reset_linked_list_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void reset_linked_list_iterator (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>resets the linked list iterator to its first or last node of list according to its type</li>
+                <li>asserts that iterator, iterator'list, iterator'list's linked aren't NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_list_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void free_linked_list_iterator (LinkedListIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>frees the memory allocated to iterator</li>
+                <li>asserts that iterator is not NULL</li>
+                <li>takes constant time</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+    </div>
+
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="../LICENSE">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | wrapper.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        .heading{
+            margin-top: 20px;
+            border-next: 2px solid black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+            font-family: 'Libre Baskerville', serif;
+        }
+        table{
+            margin-top: 10px;
+        }
+
+        .indent{
+            padding-left: 2%;
+        }   
+        .code{
+            border: 1px solid black;
+            padding: 5px;
+        }     
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 style="padding-top: 50px;">utility/wrapper.h</h3>
+        <h1 style="border: 0.5px solid black;"></h1>
+        <p>
+            Provides wrapper for primitive types!<br>
+            Allocates/deallocates memory on heap!<br>
+            Designed for ease of implementation of containers!<br>
+            All operations are done in constant time!<br> <br>
+        </p>
+        The following example creates a linked list of integers using wrappers!
+        <pre><code class="c">
+            // create a new empty linked list
+            LinkedList* list = create_empty_linked_list();
+
+            // insert integer 10 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
+            linked_list_insert_front(list, wrap_int(10));
+
+            // insert integer 20 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
+            linked_list_insert_back(list, wrap_int(20));
+
+            // get the value at index 0 in linked list but function returns void* so we unwrap it using wrapped_int_value
+            int value = wrapped_int_value(linked_list_value_at(list, 0));
+
+            // get the value at index 0 in linked list but function returns void* so we unwrap it and free memory on heap
+            int value = unwrap_int(linked_list_delete_at(list, 0));
+        </code></pre>
+    </div>
+
+    <div class="container">
+        <h5 style="padding-top: 50px;">Function summary</h5>
+        <a href="#wrap_int">void* wrap_int(int value)</a> <br>
+        <a href="#wrapped_int_value">int wrapped_int_value(void* wrapped_int);</a> <br>
+        <a href="#unwrap_int">int unwrap_int(void* wrapped_int);</a> <br>
+        <a href="#wrap_ull_int">void* wrap_ull_int(unsigned long long int value)</a> <br>
+        <a href="#wrapped_ull_int_value">unsigned long long int wrapped_ull_int_value(void* wrapped_ull_int);</a> <br>
+        <a href="#unwrap_ull_int">unsigned long long int unwrap_ull_int(void* wrapped_ull_int);</a> <br>
+        <a href="#wrap_float">void* wrap_float(float value)</a> <br>
+        <a href="#wrapped_float_value">float wrapped_float_value(void* wrapped_float);</a> <br>
+        <a href="#unwrap_float">float unwrap_float(void* wrapped_float);</a> <br>
+        <a href="#wrap_double">void* wrap_double(double value)</a> <br>
+        <a href="#wrapped_double_value">doubl wrapped_double_value(void* wrapped_double);</a> <br>
+        <a href="#unwrap_double">double unwrap_double(void* wrapped_double);</a> <br>
+    </div>
+
+    <div class="container">
+        <h5 style="padding-top: 50px;">Function description</h5>
+        <div class="function-description">
+            <table id="wrap_int">
+                <tr style="background: #F0F0F0">
+                    <th>void* wrap_int(int value)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>allocate memory on heap for one integer with given value</li>
+                    <li>returns pointer to newly allocated memory on heap if succeeds otherwise returns NULL</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="wrapped_int_value">
+                <tr style="background: #F0F0F0">
+                    <th>int wrapped_int_value(void* wrapped_int)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_int but do not delete memeory on heap</li>
+                    <li>returns the integer value contained in wrapped_int</li>
+                    <li>asserts that wrapped_int is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_int created using wrap_int call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="unwrap_int">
+                <tr style="background: #F0F0F0">
+                    <th>int unwrap_int(void* wrapped_int)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_int and deletes memeory on heap</li>
+                    <li>returns the integer value contained in wrapped_int</li>
+                    <li>asserts that wrapped_int is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_int created using wrap_int call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="wrap_ull_int">
+                <tr style="background: #F0F0F0">
+                    <th>void* wrap_ull_int(unsigned long long int value)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>allocate memory on heap for one unsigned long long integer with given value</li>
+                    <li>returns pointer to newly allocated memory on heap if succeeds otherwise returns NULL</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="wrapped_ull_int_value">
+                <tr style="background: #F0F0F0">
+                    <th>unsigned long long int wrapped_ull_int_value(void* wrapped_ull_int)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_ull_int but do not delete memeory on heap</li>
+                    <li>returns the unsigned long long integer value contained in wrapped_ull_int</li>
+                    <li>asserts that wrapped_ull_int is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_ull_int created using wrap_ull_int call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="unwrap_ull_int">
+                <tr style="background: #F0F0F0">
+                    <th>unsigned long long int wrap_ull_int(void* wrapped_ull_int)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_ull_int and deletes memeory on heap</li>
+                    <li>returns the unsigned long long integer value contained in wrapped_ull_int</li>
+                    <li>asserts that wrapped_ull_int is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_ull_int created using wrap_ull_int call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="wrap_float">
+                <tr style="background: #F0F0F0">
+                    <th>void* wrap_float(float value)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>allocate memory on heap for one floating-point with given value</li>
+                    <li>returns pointer to newly allocated memory on heap if succeeds otherwise returns NULL</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="wrapped_float_value">
+                <tr style="background: #F0F0F0">
+                    <th>float wrapped_float_value(void* wrapped_float)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_float but do not delete memeory on heap</li>
+                    <li>returns the floating-point value contained in wrapped_float</li>
+                    <li>asserts that wrapped_float is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_float created using wrap_float call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="unwrap_float">
+                <tr style="background: #F0F0F0">
+                    <th>float unwrap_float(void* wrapped_float)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_float and deletes memeory on heap</li>
+                    <li>returns the floating-point value contained in wrapped_float</li>
+                    <li>asserts that wrapped_float is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_float created using wrap_float call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="wrap_double">
+                <tr style="background: #F0F0F0">
+                    <th>void* wrap_double(double value)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>allocate memory on heap for one double-floating-point with given value</li>
+                    <li>returns pointer to newly allocated memory on heap if succeeds otherwise returns NULL</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="wrapped_double_value">
+                <tr style="background: #F0F0F0">
+                    <th>double wrapped_double_value(void* wrapped_double)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_double but do not delete memeory on heap</li>
+                    <li>returns the double-floating-point value contained in wrapped_double</li>
+                    <li>asserts that wrapped_double is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_double created using wrap_double call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="unwrap_double">
+                <tr style="background: #F0F0F0">
+                    <th>double unwrap_double(void* wrapped_double)</th>
+                </tr>
+                <tr><td><ul>
+                    <li>gets the value contained in wrapped_double and deletes memeory on heap</li>
+                    <li>returns the double-floating-point value contained in wrapped_double</li>
+                    <li>asserts that wrapped_double is NOT NULL</li>
+                    <li>behavior is undefined if other parameter is passed instead of a wrapped_double created using wrap_double call</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            
+
+        </div>
+
+    </div>
+    <div class="container">
+        <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+        <p style="text-align: center">
+            Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+            <a href="../LICENSE">GNU General Public License</a> <br>
+        </p>
+    </div>
+</body>
+</html>

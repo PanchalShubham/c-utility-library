@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | queue.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/queue.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implementation of queue (first in first out - FIFO) using singly linked list!<br>
+        linkedqueue is <strong>not syncronized</strong>!<br>
+        All operations are done in constant time except for search which takes linear time!<br> <br>
+    </p>
+    The following example shows some queue operations on queue of integers using wrappers!
+    <pre><code class="c">
+
+    // create a new linked queue
+    Queue* queue = create_empty_linked_queue();
+
+    // insert data to queue [0...4]
+    for (int i = 0; i < 5; ++i)
+        linked_queue_enQueue(queue, wrap_int(i));
+
+    // print the status of queue to console
+    // note that this function isn't provided by library
+    printQueue(queue);
+
+    // search for key 3 in queue - note the use of wrapper
+    // and free_key set to true to free memory on heap for key
+    // after searching operation finishes
+    printf ("%d exist in queue? %d\n", 3, linked_queue_contains(queue, wrap_int(3), compare_callback, true));
+
+
+    // deQueue all elements from queue
+    while (!linked_queue_is_empty(queue))
+        printf ("deQueued %d\n", unwrap_int(linked_queue_deQueue(queue)));
+    </code></pre>
+
+    The following example shows iteration through queue!
+    <pre><code class="c">
+    void printQueue(Queue* queue){
+
+            // print a simple message
+            printf ("Queue (front to rear): ");
+
+            // create an iterator for linked queue
+            QueueIterator* iterator = create_linked_queue_iterator(queue);
+
+            // iterate as long as we have value in iterator
+            while (linked_queue_iterator_has_next(iterator)){
+
+                // get the value of current node and shift iterator to next node
+                void* value = linked_queue_iterator_next(iterator);
+
+                // process value here - note the use of wrapper
+                printf ("%d ", wrapped_int_value(value));
+            }
+        }
+    </code></pre>
+
+
+    The following piece of code shows callback implementation!
+    <pre><code class="c">
+    int compare_callback(void* key1, void* key2){
+        // cast pointers to appropriate type
+        int val1 =  *((int*)key1);
+        int val2 =  *((int*)key2);
+
+        // make comparison and return result
+        return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+    }
+    </code></pre>
+
+
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function summary</h5>
+    <a href="#create_empty_linked_queue">Queue* create_empty_linked_queue();</a><br>
+    <a href="#linked_queue_enQueue">bool linked_queue_enQueue(Queue* queue, void* value);</a><br>
+    <a href="#linked_queue_deQueue">void* linked_queue_deQueue(Queue* queue);</a><br>
+    <a href="#linked_queue_front">void* linked_queue_front(Queue* queue);</a><br>
+    <a href="#linked_queue_rear">void* linked_queue_rear(Queue* queue);</a><br>
+    <a href="#linked_queue_size">int linked_queue_size(Queue* queue);</a><br>
+    <a href="#linked_queue_size">bool linked_queue_is_empty(Queue* queue);</a><br>
+    <a href="#linked_queue_indexOf">int linked_queue_indexOf(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</a><br>
+    <a href="#linked_queue_contains">bool linked_queue_contains(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</a><br>
+    <a href="#linked_queue_equals">bool linked_queue_equals(Queue* queue1, Queue* queue2, utility_compare compare_callback);</a><br>
+    <a href="#reset_linked_queue">void reset_linked_queue(Queue* queue, bool free_keys);</a><br>
+    <a href="#free_linked_queue">void free_linked_queue(Queue* queue, bool free_keys);</a><br>
+    <a href="#create_linked_queue_iterator">QueueIterator* create_linked_queue_iterator(Queue* queue);</a><br>
+    <a href="#linked_queue_iterator_has_next">bool linked_queue_iterator_has_next(QueueIterator* iterator);</a><br>
+    <a href="#linked_queue_iterator_next">void* linked_queue_iterator_next(QueueIterator* iterator);</a><br>
+    <a href="#reset_linked_queue_iterator">void reset_linked_queue_iterator(QueueIterator* iterator);</a><br>
+    <a href="#free_linked_queue_iterator">void free_linked_queue_iterator(QueueIterator* iterator);</a><br>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function description</h5>
+    <div class="function-description">
+        <table id="create_empty_linked_queue">
+            <tr style="background: #F0F0F0">
+                <th>Queue* create_empty_linked_queue();</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a new linked queue on heap</li>
+                <li>returns pointer to newly created linked queue if succeeds otherwise returns NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_enQueue">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_queue_enQueue(Queue* queue, void* value);</th>
+            </tr>
+            <tr><td><ul>
+                <li>enQueuees given data to queue</li>
+                <li>returns true if enQueue operation succeeds otherwise returns false</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_deQueue">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_queue_deQueue(Queue* queue);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns and removes the top data from queue is exist otherwise returns NULL</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_front">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_queue_front(Queue* queue);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns but NOT remove the front data from queue is exist otherwise returns NULL</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_rear">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_queue_rear(Queue* queue);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns but NOT remove the last data from queue is exist otherwise returns NULL</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_size">
+            <tr style="background: #F0F0F0">
+                <th>int linked_queue_size(Queue* queue);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the size of the queue</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_is_empty">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_queue_is_empty(Queue* queue)</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if queue is empty</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_indexOf">
+            <tr style="background: #F0F0F0">
+                <th>int linked_queue_indexOf(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the index of 1st occurrence of key in queue if exist otherwise returns -1</li>
+                <li>optionally frees the memory allocated to key after performing search operation</li>
+                <li>asserts that queue and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_contains">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_queue_contains(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if queue contains key otherwise returns false</li>
+                <li>optionally frees the memory allocated to key after performing search operation</li>
+                <li>asserts that queue and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_equals">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_queue_equals(Queue* queue1, Queue* queue2, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if both queue contains same data</li>
+                <li>asserts that queue and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="reset_linked_queue">
+            <tr style="background: #F0F0F0">
+                <th>void reset_linked_queue(Queue* queue, bool free_keys);</th>
+            </tr>
+            <tr><td><ul>
+                <li>reset the content of queue i.e. makes queue empty</li>
+                <li>optionally frees the memory allocated to values</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_queue">
+            <tr style="background: #F0F0F0">
+                <th>void free_linked_queue(Queue* queue, bool free_keys);</th>
+            </tr>
+            <tr><td><ul>
+                <li>free the queue i.e. deletes the queue from memory</li>
+                <li>optionally frees the memory allocated to values</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="create_linked_queue_iterator">
+            <tr style="background: #F0F0F0">
+                <th>QueueIterator* create_linked_queue_iterator(Queue* queue);</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a new linked queue iterator and returns a pointer to it if succeeds otherwise returns NULL</li>
+                <li>asserts that queue is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_iterator_has_next">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_queue_iterator_has_next(QueueIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if iterator can move to next node</li>
+                <li>asserts that queue iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_queue_iterator_next">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_queue_iterator_next(QueueIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value of current node and sets the iterator to point to next node on queue</li>
+                <li>asserts that queue iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="reset_linked_queue_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void reset_linked_queue_iterator(QueueIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>resets the linked queue iterator to point to 1st node in queue</li>
+                <li>asserts that queue iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_queue_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void free_linked_queue_iterator(QueueIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>frees the memory allocated to linked queue iterator on heap</li>
+                <li>asserts that queue iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+    </div>
+
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../LICENSE">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

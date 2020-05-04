@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | stack.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/stack.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implementation of stack (last in first out - LIFO) using singly linked list!<br>
+        linkedstack is <strong>not syncronized</strong>!<br>
+        All operations are done in constant time except for search which takes linear time!<br> <br>
+    </p>
+    The following example shows some stack operations on stack of integers using wrappers!
+    <pre><code class="c">
+    // create an empty linked stack
+    Stack* stack = create_empty_linked_stack();
+
+    // push integer data [0...4] to stack using wrapper
+    for (int i = 0; i < 5; ++i)
+        linked_stack_push(stack, wrap_int(i));
+
+    // print stack status to console using iterators
+    // note that this function is written by user and isn't provided by library
+    printStack(stack);
+
+    // pop one element from stack and print result to console
+    // not the use of unwrapping again
+    printf ("popped %d\n", unwrap_int(linked_stack_pop(stack)));
+
+    // print the size of the stack to console
+    printf ("Stack size: %d\n", linked_stack_size(stack));
+
+    // search in stack - not that free_key parameter is set to true
+    // this frees the memory allocated to wrapped integer after searching
+    printf ("%d exist in stack? %d\n", 1, linked_stack_contains(stack, wrap_int(1), compare_callback, true));
+    </code></pre>
+
+    The following example shows iteration through stack!
+    <pre><code class="c">
+    // prints the content of stack to console using iterators
+    void printStack(Stack* stack){
+
+        // a simple message for user
+        printf ("Stack Status (top to next):\n");
+
+        // create a new stack iterator
+        StackIterator* iterator = create_linked_stack_iterator(stack);
+
+        // iterate as long as iterator has next node
+        while (linked_stack_iterator_has_next(iterator)){
+            // get the value of the current node and shift iterator to next node
+            void* value = linked_stack_iterator_next(iterator);
+
+            // process current value - note use of unwrapping from void* to int
+            printf ("%d\n", wrapped_int_value(value));
+        }
+
+    }
+    </code></pre>
+
+
+    The following piece of code shows callback implementation!
+    <pre><code class="c">
+    int compare_callback(void* key1, void* key2){
+        // cast pointers to appropriate type
+        int val1 =  *((int*)key1);
+        int val2 =  *((int*)key2);
+
+        // make comparison and return result
+        return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+    }
+    </code></pre>
+
+
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function summary</h5>
+    <a href="#create_empty_linked_stack">Stack* create_empty_linked_stack();</a><br>
+    <a href="#linked_stack_push">bool linked_stack_push(Stack* stack, void* value);</a><br>
+    <a href="#linked_stack_pop">void* linked_stack_pop(Stack* stack);</a><br>
+    <a href="#linked_stack_peek">void* linked_stack_peek(Stack* stack);</a><br>
+    <a href="#linked_stack_size">int linked_stack_size(Stack* stack);</a><br>
+    <a href="#linked_stack_size">bool linked_stack_is_empty(Stack* stack);</a><br>
+    <a href="#linked_stack_indexOf">int linked_stack_indexOf(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</a><br>
+    <a href="#linked_stack_contains">bool linked_stack_contains(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</a><br>
+    <a href="#linked_stack_equals">bool linked_stack_equals(Stack* stack1, Stack* stack2, utility_compare compare_callback);</a><br>
+    <a href="#reset_linked_stack">void reset_linked_stack(Stack* stack, bool free_keys);</a><br>
+    <a href="#free_linked_stack">void free_linked_stack(Stack* stack, bool free_keys);</a><br>
+    <a href="#create_linked_stack_iterator">StackIterator* create_linked_stack_iterator(Stack* stack);</a><br>
+    <a href="#linked_stack_iterator_has_next">bool linked_stack_iterator_has_next(StackIterator* iterator);</a><br>
+    <a href="#linked_stack_iterator_next">void* linked_stack_iterator_next(StackIterator* iterator);</a><br>
+    <a href="#reset_linked_stack_iterator">void reset_linked_stack_iterator(StackIterator* iterator);</a><br>
+    <a href="#free_linked_stack_iterator">void free_linked_stack_iterator(StackIterator* iterator);</a><br>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function description</h5>
+    <div class="function-description">
+        <table id="create_empty_linked_stack">
+            <tr style="background: #F0F0F0">
+                <th>Stack* create_empty_linked_stack();</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a new linked stack on heap</li>
+                <li>returns pointer to newly created linked stack if succeeds otherwise returns NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_push">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_stack_push(Stack* stack, void* value);</th>
+            </tr>
+            <tr><td><ul>
+                <li>pushes given data to stack</li>
+                <li>returns true if push operation succeeds otherwise returns false</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_pop">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_stack_pop(Stack* stack);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns and removes the top data from stack is exist otherwise returns NULL</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_peek">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_stack_peek(Stack* stack);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns but NOT remove the top data from stack is exist otherwise returns NULL</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_size">
+            <tr style="background: #F0F0F0">
+                <th>int linked_stack_size(Stack* stack);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the size of the stack</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_is_empty">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_stack_is_empty(Stack* stack)</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if stack is empty</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_indexOf">
+            <tr style="background: #F0F0F0">
+                <th>int linked_stack_indexOf(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the index of 1st occurrence of key in stack if exist otherwise returns -1</li>
+                <li>optionally frees the memory allocated to key after performing search operation</li>
+                <li>asserts that stack and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_contains">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_stack_contains(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if stack contains key otherwise returns false</li>
+                <li>optionally frees the memory allocated to key after performing search operation</li>
+                <li>asserts that stack and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_equals">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_stack_equals(Stack* stack1, Stack* stack2, utility_compare compare_callback);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if both stack contains same data</li>
+                <li>asserts that stack and callback are not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="reset_linked_stack">
+            <tr style="background: #F0F0F0">
+                <th>void reset_linked_stack(Stack* stack, bool free_keys);</th>
+            </tr>
+            <tr><td><ul>
+                <li>reset the content of stack i.e. makes stack empty</li>
+                <li>optionally frees the memory allocated to values</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_stack">
+            <tr style="background: #F0F0F0">
+                <th>void free_linked_stack(Stack* stack, bool free_keys);</th>
+            </tr>
+            <tr><td><ul>
+                <li>free the stack i.e. deletes the stack from memory</li>
+                <li>optionally frees the memory allocated to values</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="create_linked_stack_iterator">
+            <tr style="background: #F0F0F0">
+                <th>StackIterator* create_linked_stack_iterator(Stack* stack);</th>
+            </tr>
+            <tr><td><ul>
+                <li>creates a new linked stack iterator and returns a pointer to it if succeeds otherwise returns NULL</li>
+                <li>asserts that stack is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_iterator_has_next">
+            <tr style="background: #F0F0F0">
+                <th>bool linked_stack_iterator_has_next(StackIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns true if iterator can move to next node</li>
+                <li>asserts that stack iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="linked_stack_iterator_next">
+            <tr style="background: #F0F0F0">
+                <th>void* linked_stack_iterator_next(StackIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>returns the value of current node and sets the iterator to point to next node on stack</li>
+                <li>asserts that stack iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="reset_linked_stack_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void reset_linked_stack_iterator(StackIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>resets the linked stack iterator to point to 1st node in stack</li>
+                <li>asserts that stack iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+        <table id="free_linked_stack_iterator">
+            <tr style="background: #F0F0F0">
+                <th>void free_linked_stack_iterator(StackIterator* iterator);</th>
+            </tr>
+            <tr><td><ul>
+                <li>frees the memory allocated to linked stack iterator on heap</li>
+                <li>asserts that stack iterator is not NULL</li>
+                <li>since release @2020.1</li>
+            </ul></td></tr>
+        </table>
+    </div>
+
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../LICENSE">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

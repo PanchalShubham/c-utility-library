@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | random.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+		  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        .heading{
+            margin-top: 20px;
+            border-next: 2px solid black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3 style="padding-top: 50px;">utility/random.h</h3>
+        <h1 style="border: 0.5px solid black;"></h1>
+        <p>
+            Wrapper for random number/string generators! <br>
+        </p>
+        The following piece of code shows some examples of random number/string generator
+        <pre><code class="c">
+            // generates a random integer in range [0...N - 1] both inclusive
+            int index = random_int_range(0, N - 1);
+
+            // generates a value in range [0...1] both inclusive
+            double probability = random_double();
+
+            // generates a random token of length 24
+            char* token = random_hex_string(24)
+
+            // generates a 6-digit random sequence of [0...9]
+            char* otp = random_decimal_string(6);
+        </code></pre>
+    </div>
+
+    <div class="container">
+        <h5 style="padding-top: 50px;">Function summary</h5>
+        <a href="#randomize">void randomize(void);</a> <br>
+        <a href="#random_int">int random_int(void);</a> <br>
+        <a href="#random_int_upper_bound">int random_int_upper_bound(int upper_bound);</a> <br>
+        <a href="#random_int_range">int random_int_range(int lower_bound, int upper_bound);</a> <br>
+        <a href="#random_double">double random_double(void);</a> <br>
+        <a href="#random_double_upper_bound">double random_double_upper_bound(doule upper_bound);</a> <br>
+        <a href="#random_double_range">double random_double_range(double lower_bound, double upper_bound);</a> <br>
+        <a href="#random_binary_string">char* random_binary_string(int length);</a><br>
+        <a href="#random_octal_string">char* random_octal_string(int length);</a><br>
+        <a href="#random_decimal_string">char* random_decimal_string(int length);</a> <br>
+        <a href="#random_hex_string">char* random_hex_string(int length);</a> <br>
+        <a href="#random_printable_string">char* random_printable_string(int length);</a><br>
+        <a href="#random_alphabetical_string">char* random_alphabetical_string(int length);</a> <br>
+        <a href="#random_alphanumeric_string">char* random_alphanumeric_string(int length);</a><br>
+        <a href="#random_special_string">char* random_special_string(int length);</a><br>
+    </div>
+
+    <div class="container">
+        <h5 style="padding-top: 50px;">Function description</h5>
+        <div class="function-description">
+            <table id="randomize">
+                <tr style="background: #F0F0F0">
+                    <th>void randomize(void);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>seeds the random number/string generator</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_int">
+                <tr style="background: #F0F0F0">
+                    <th>int random_int(void);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_int_upper_bound">
+                <tr style="background: #F0F0F0">
+                    <th>int random_int_upper_bound(int upper_bound);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random integer in range [0...upper_bound] both inclusive</li>
+                    <li>asserts that upper_bound &gt;= 0</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_int_range">
+                <tr style="background: #F0F0F0">
+                    <th>int random_int_range(int lower_bound, int upper_bound);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random integer in range [lower_bound...upper_bound] both inclusive</li>
+                    <li>asserts that 0 &lt;= lower_bound and lower_bound &lt;= upper_bound</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="random_double">
+                <tr style="background: #F0F0F0">
+                    <th>double random_double(void);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random double floating point value in range [0...1] both inclusive</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_double_upper_bound">
+                <tr style="background: #F0F0F0">
+                    <th>double random_double_upper_bound(double upper_bound);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random double-floating-point value in range [0...upper_bound] both inclusive</li>
+                    <li>asserts that upper_bound &gt;= 0</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_double_range">
+                <tr style="background: #F0F0F0">
+                    <th>double random_double_range(double lower_bound, double upper_bound);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random double in range [lower_bound...upper_bound] both inclusive</li>
+                    <li>asserts that 0 &lt;= lower_bound and lower_bound &lt;= upper_bound</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            
+            <table id="random_binary_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_binary_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random binary string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="random_octal_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_octal_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random octal string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="random_decimal_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_decimal_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random decimal string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+            <table id="random_hex_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_hex_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a <em>lowercase</em> random hexadecimal string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_printable_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_printable_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random string of printable characters of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_alphabetical_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_alphabetical_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random alphabetical string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_alphanumeric_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_alphanumeric_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random alphanumeric string of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+            <table id="random_special_string">
+                <tr style="background: #F0F0F0">
+                    <th>char* random_special_string(int length);</th>
+                </tr>
+                <tr><td><ul>
+                    <li>generates a random string of printable special characters of given length on <strong>heap</strong></li>
+                    <li>asserts that length is a positive integer</li>
+                    <li>since release @2020.1</li>
+                </ul></td></tr>
+            </table>
+
+        </div>
+
+    </div>
+    <div class="container">
+        <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+        <p style="text-align: center">
+            Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+            <a href="../LICENSE">GNU General Public License</a> <br>
+        </p>
+    </div>
+</body>
+</html>
