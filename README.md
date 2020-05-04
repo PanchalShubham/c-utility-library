@@ -1,13 +1,10 @@
-# The utility library
+# utility library
 A small and simple library for C programming language with generic utilities. 
 
-# Usage
+# usage
 Full docs can be found at:
-https://panchalshubham.github.io/c-utility-library/
+https://panchalshubham.github.io/c-utility-library/index.html
 
-# Installation
-Follow the instructions in documentation
-
-# LICENSE
+# license
 GNU GENERAL PUBLIC LICENSE
 

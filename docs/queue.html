@@ -129,9 +129,9 @@
     <a href="#linked_queue_rear">void* linked_queue_rear(Queue* queue);</a><br>
     <a href="#linked_queue_size">int linked_queue_size(Queue* queue);</a><br>
     <a href="#linked_queue_size">bool linked_queue_is_empty(Queue* queue);</a><br>
-    <a href="#linked_queue_indexOf">int linked_queue_indexOf(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</a><br>
-    <a href="#linked_queue_contains">bool linked_queue_contains(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</a><br>
-    <a href="#linked_queue_equals">bool linked_queue_equals(Queue* queue1, Queue* queue2, utility_compare compare_callback);</a><br>
+    <a href="#linked_queue_indexOf">int linked_queue_indexOf(Queue* queue, void* key, Comparator compare_callback, bool free_key);</a><br>
+    <a href="#linked_queue_contains">bool linked_queue_contains(Queue* queue, void* key, Comparator compare_callback, bool free_key);</a><br>
+    <a href="#linked_queue_equals">bool linked_queue_equals(Queue* queue1, Queue* queue2, Comparator compare_callback);</a><br>
     <a href="#reset_linked_queue">void reset_linked_queue(Queue* queue, bool free_keys);</a><br>
     <a href="#free_linked_queue">void free_linked_queue(Queue* queue, bool free_keys);</a><br>
     <a href="#create_linked_queue_iterator">QueueIterator* create_linked_queue_iterator(Queue* queue);</a><br>
@@ -217,7 +217,7 @@
         </table>
         <table id="linked_queue_indexOf">
             <tr style="background: #F0F0F0">
-                <th>int linked_queue_indexOf(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</th>
+                <th>int linked_queue_indexOf(Queue* queue, void* key, Comparator compare_callback, bool free_key);</th>
             </tr>
             <tr><td><ul>
                 <li>returns the index of 1st occurrence of key in queue if exist otherwise returns -1</li>
@@ -228,7 +228,7 @@
         </table>
         <table id="linked_queue_contains">
             <tr style="background: #F0F0F0">
-                <th>bool linked_queue_contains(Queue* queue, void* key, utility_compare compare_callback, bool free_key);</th>
+                <th>bool linked_queue_contains(Queue* queue, void* key, Comparator compare_callback, bool free_key);</th>
             </tr>
             <tr><td><ul>
                 <li>returns true if queue contains key otherwise returns false</li>
@@ -239,7 +239,7 @@
         </table>
         <table id="linked_queue_equals">
             <tr style="background: #F0F0F0">
-                <th>bool linked_queue_equals(Queue* queue1, Queue* queue2, utility_compare compare_callback);</th>
+                <th>bool linked_queue_equals(Queue* queue1, Queue* queue2, Comparator compare_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>returns true if both queue contains same data</li>

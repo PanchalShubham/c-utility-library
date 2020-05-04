@@ -145,13 +145,13 @@
     <a href="#create_random_double_array">double* create_random_double_array(int N);</a><br>
     <a href="#create_random_double_array_upper_bound">double* create_random_double_array_upper_bound(int N, double upper_bound);</a><br>
     <a href="#create_random_double_array_range">double* create_random_double_array_range(int N, double lower_bound, double upper_bound);</a><br>
-    <a href="#shuffle_array">void shuffle_array(void* array, int low, int high, utility_swap_indices swap_callback);</a><br>
-    <a href="#reverse_array">void reverse_array(void* array, int low, int high, utility_swap_indices swap_callback);</a><br>
-    <a href="#linear_search">int linear_search(const void* array, int low, int high, const void* key, utility_compare_key compare_callback);</a><br>
-    <a href="#binary_search">int binary_search(const void* array, int low, int high, const void* key, utility_compare_key compare_callback);</a><br>
-    <a href="#insertion_sort">void insertion_sort(void* array, int low, int high, utility_compare_indices compare_callback, utility_swap_indices swap_callback);</a><br>
-    <a href="#quick_sort">void quick_sort(void* array, int low, int high, utility_compare_indices compare_callback, utility_swap_indices swap_callback);</a>
-    <a href="#merge_sort">void merge_sort(void* array, void* auxiliary_array, int low, int high, utility_compare_indices compare_callback, utility_copy_indices copy_callback);</a><br>
+    <a href="#shuffle_array">void shuffle_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</a><br>
+    <a href="#reverse_array">void reverse_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</a><br>
+    <a href="#linear_search">int linear_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</a><br>
+    <a href="#binary_search">int binary_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</a><br>
+    <a href="#insertion_sort">void insertion_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</a><br>
+    <a href="#quick_sort">void quick_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</a>
+    <a href="#merge_sort">void merge_sort(void* array, void* auxiliary_array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesCopier copy_callback);</a><br>
     <a href="#free_array">void free_array(void* array);</a><br>
 </div>
 
@@ -271,7 +271,7 @@
         </table>
         <table id="shuffle_array">
             <tr style="background: #F0F0F0">
-                <th>void shuffle_array(void* array, int low, int high, utility_swap_indices swap_callback);</th>
+                <th>void shuffle_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>shuffles the content of the array uniformly within given range</li>
@@ -281,7 +281,7 @@
         </table>
         <table id="reverse_array">
             <tr style="background: #F0F0F0">
-                <th>void reverse_array(void* array, int low, int high, utility_swap_indices swap_callback);</th>
+                <th>void reverse_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>reverses the content of array within given range</li>
@@ -291,7 +291,7 @@
         </table>
         <table id="linear_search">
             <tr style="background: #F0F0F0">
-                <th>int linear_search(const void* array, int low, int high, const void* key, utility_compare_key compare_callback);</th>
+                <th>int linear_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>returns the index of 1st occurrence of key in array if exist otherwise returns -1</li>
@@ -301,7 +301,7 @@
         </table>
         <table id="binary_search">
             <tr style="background: #F0F0F0">
-                <th>int binary_search(const void* array, int low, int high, const void* key, utility_compare_key compare_callback);</th>
+                <th>int binary_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>returns the index of 1st occurrence of key closes to middle of array if exist otherwise returns -1</li>
@@ -311,7 +311,7 @@
         </table>
         <table id="insertion_sort">
             <tr style="background: #F0F0F0">
-                <th>void insertion_sort(void* array, int low, int high, utility_compare_indices compare_callback, utility_swap_indices swap_callback);</th>
+                <th>void insertion_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>sorts the array using insertion sort algorithm</li>
@@ -321,7 +321,7 @@
         </table>
         <table id="quick_sort">
             <tr style="background: #F0F0F0">
-                <th>void quick_sort(void* array, int low, int high, utility_compare_indices compare_callback, utility_swap_indices swap_callback);</th>
+                <th>void quick_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>sorts the array using quick sort algorithm</li>
@@ -331,7 +331,7 @@
         </table>
         <table id="merge_sort">
             <tr style="background: #F0F0F0">
-                <th>void merge_sort(void* array, void* auxiliary_array, int low, int high, utility_compare_indices compare_callback, utility_copy_indices copy_callback);</th>
+                <th>void merge_sort(void* array, void* auxiliary_array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesCopier copy_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>sorts the array using merge sort algorithm</li>

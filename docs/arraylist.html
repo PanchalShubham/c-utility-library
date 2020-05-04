@@ -32,11 +32,6 @@
             color: black;
         }
 
-        .heading{
-            margin-top: 20px;
-            border-next: 2px solid black;
-        }
-
         table {
             width: 100%;
             text-align: justify;
@@ -65,491 +60,193 @@
         Capacity of the list is halved if array list is at most 25% filled!<br>
         Theoretical maximum capacity of array list is INT_MAX (2,147,483,647 on most platforms)<br>
         All memory allocation operations are done on heap!<br>
-        Time and space complexity of operations are described below!<br>
+        Insertion and deletion takes constant amortized time!<br>
+        Searching takes linear time!<br>
+        <a href="examples/arraylistexample.html">Example</a>
     </p>
+</div>
 
-        <br>
-        The following example uses wrapper (from wrapper.h) for creating an array list of integers!
-        <pre><code class="c">
-            // seed random number generator from random.h
-            randomize();
-
-            // create a new empty array list of initial capacity 5
-            ArrayList *list = create_empty_array_list(5);
-
-            // insert 7 elements in array list in range [0...100]
-            // note that size of the list will be expanded i.e. doubled when needed
-            for (int i = 0; i < 7; ++i)
-                array_list_insert_back(list, wrap_int(random_int_upper_bound(100)));
-
-            // prints the content of array list to console using iterators
-            printArrayList(list);
-
-            // delete the node with value 10 from list if exist
-            // note the use of parameters free_key and free_list_key set to true
-            bool deletionResult = array_list_delete(list, wrap_int(10), compare_callback, true, true);
-            // free_key set to true means the memory which is allocated on heap for wrapped integer will be freed at the end
-            // and free_list_key set to true means that memory which was allocated on heap for wrapped integer while insertion should be freed
-            /*free key options are supplied with primitive types and wrappers in mind*/
-        </code></pre>
-
-        The following piece of code uses array list iterator to traverse the array list (note the use of wrapper.h again)
-        <pre><code class="c">
-            // prints the content of array list to console
-            void printArrayList(ArrayList* list){
-
-                // print size and capacity of list to console
-                printf ("List(%d/%d): ", list->size, list->capacity);
-
-                // create a new array list iterator associated with given list
-                ArrayListIterator* iterator = create_array_list_iterator(list);
-
-                // iterate as long as we have a next node
-                while (array_list_iterator_has_next(iterator))
-                    printf ("%d ", wrapped_int_value(array_list_iterator_next(iterator)));
-
-                // free memory allocated to iterator
-                free_array_list_iterator(iterator);
-            }
-        </code></pre>
-
-    The following piece of code shows the example of callback (type included from utilitytypes.h)
+<div class="container" id="summary">
+    <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
     <pre><code class="c">
-        /*returns -1, 0 or 1 according to if key1 is less than, equal or gerater than key2*/
-        int compare_callback(void* key1, void* key2){
+/*allocates memory for new ArrayList with initial capacity*/
+/*returns a pointer to it if succeeds otherwise returns NULL*/
+/*asserts that initial capacity is a positive integer*/
+/*since release@2020.1*/
+ ArrayList* new_array_list(int initial_capacity);
 
-            // first we cast key1 and key2 pointers to their original types (int in this case)
-            int val1 = *((int*)key1);
-            int val2 = *((int*)key2);
 
-            // next we perform a comparison and return the result back
-            return (val1 > val2 ? 1  : val1 == val2 ? 0 : -1);
-        }
+
+
+/*inserts the value at given index in ArrayList shifting the values to right*/
+/*resize the array if needed (to double size - if possible)*/
+/*asserts that list, list's array aren't NULL and index is in bound [0...N]*/
+/*insertion at index N => append operation*/
+/*returns true if operation succeeds otherwise returns false*/
+/*since release@2020.1*/
+ bool array_list_insert_at(ArrayList* list, void* value, int index);
+
+/*inserts the value at front of the ArrayList and returns true if succeeds otherwise returns false*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ bool array_list_insert_front(ArrayList* list, void* value);
+
+/*inserts the value at back of the ArrayList and returns true if succeeds otherwise returns false*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ bool array_list_insert_back(ArrayList* list, void* value);
+
+
+
+
+/*deletes the value at given index and returns value contained if succeeds otherwise returns NULL*/
+/*asserts that list, list's array are not NULL and index is in bound [0...N-1]*/
+/*since release@2020.1*/
+ void* array_list_delete_at(ArrayList* list, int index);
+
+/*returns and deletes the value at front if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_delete_front(ArrayList* list);
+
+/*returns and deletes the value at end if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_delete_back(ArrayList* list);
+
+/*deletes the 1st occurrence of key in ArrayList, returns true if deletion succeeds otherwise returns false*/
+/*optionally frees the memory for deleted element*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_delete(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd, bool freeListKey);
+
+/*deletes all occurrences of key in ArrayList, returns count of deleted items*/
+/*optionally frees the memory for deleted element*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ int array_list_delete_all(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd, bool freeListKeys);
+
+
+
+
+/*returns true if key exist in ArrayList otherwise returns false*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_contains(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns the index of 1st occurrence of key in ArrayList if exist otherwise returns -1*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ int array_list_indexOf(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+/*returns the value at given index in ArrayList*/
+/*asserts that list, list's array are not NULL and index is in bound [0...N - 1]*/
+/*since release@2020.1*/
+ void* array_list_value_at(ArrayList* list, int index);
+
+/*returns the front item of the array list if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_front(ArrayList* list);
+
+/*returns the last item of the array list if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_back(ArrayList* list);
+
+/*returns true if ArrayList is empty otherwise returns false*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ bool array_list_is_empty(ArrayList* list);
+
+/*returns the size of the ArrayList*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ int array_list_size(ArrayList* list);
+
+/*returns the capacity of the array list*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ int array_list_capacity(ArrayList* list);
+
+/*returns true if both array list contains same elements - ignores difference in capacity (if any)*/
+/*asserts that lists, lists's arrays and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_equals(ArrayList* list1, ArrayList* list2, Comparator comparator);
+
+/*reverses the content of array list*/
+/*asserts that list, list's array aren't NULL*/
+/*since release@2020.1*/
+ void array_list_reverse(ArrayList* list);
+
+/*sorts the array list using merge sort algorithm and returns true if succeeds otherwise returns false*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_sort(ArrayList* list, Comparator comparator);
+
+
+
+
+/*clear the content of array list and optionally frees the memory allocated to keys*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ void clear_array_list(ArrayList*  list, bool free_key);
+
+/*frees the memory allocate to array list and optionally frees the memory allocated to keys*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ void free_array_list(ArrayList*  list, bool free_key);
+
+
+
+        
+/*returns an iterator for array list pointing to 1st node if succeeds otherwise returns NULL*/
+/*asserts that array list is not NULL*/
+/*since release@2020.1*/
+ ArrayListIterator* new_array_list_iterator(ArrayList* list);
+
+/*returns a pointer to an iterator for ArrayList pointing to last node if succeeds otherwise returns NULL*/
+/*assert that array list is not NULL*/
+/*since release@2020.1*/
+ ArrayListIterator* new_array_list_reverse_iterator(ArrayList* list);
+
+/*checks if array list iterator has a value*/
+/*assert that iterator and iterator's list are not NULL*/
+/*since release@2020.1*/
+ bool array_list_iterator_has_next(ArrayListIterator* iterator);
+
+/*checks if array list iterator has a value*/
+/*assert that iterator and iterator's list are not NULL*/
+/*since release@2020.1*/
+ bool array_list_iterator_has_previous(ArrayListIterator* iterator);
+
+/*returns the value of current node and update iterator to previous node*/
+/*asserts that iterator, iterator's list, iterator's list's array are not NULL and iterator's current current node is not  NULL*/
+/*since release@2020.1*/
+ void* array_list_iterator_next(ArrayListIterator* iterator);
+
+/*returns the value of current node and update iterator to previous node*/
+/*asserts that iterator, iterator's list, iterator's list's array are not NULL and iterator's current current node is not  NULL*/
+/*since release@2020.1*/
+ void* array_list_iterator_previous(ArrayListIterator* iterator);
+
+/*resets the iterator to appropriate node*/
+/*asserts that iterator, iterator's list are not NULL*/
+/*since release@2020.1*/
+ void reset_array_list_iterator(ArrayListIterator* iterator);
+
+/*frees the memory allocated to iterator*/
+/*asserts that input iterator is not NULL*/
+/*since release@2020.1*/
+ void free_array_list_iterator(ArrayListIterator* iterator);
+
+
     </code></pre>
 </div>
 
-<div class="container">
-    <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
-    <table>
-        <tbody>
-        <tr><td><a  href="#create_empty_array_list">ArrayList* create_empty_array_list (int initial_capacity);</a></td></tr>
-        <tr><td><a  href="#array_list_insert_at">bool array_list_insert_at (ArrayList* list, void* value, int index);</a></td></tr>
-        <tr><td><a  href="#array_list_insert_front">bool array_list_insert_front (ArrayList* list, void* value);</a></td></tr>
-        <tr><td><a  href="#array_list_insert_back">bool array_list_insert_back (ArrayList* list, void* value);</a></td></tr>
-        <tr><td><a  href="#array_list_delete_at">void* array_list_delete_at (ArrayList* list, int index);</a></td></tr>
-        <tr><td><a  href="#array_list_delete_front">void* array_list_delete_front (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_delete_back">void* array_list_delete_back (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_delete">bool array_list_delete(ArrayList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</a></td></tr>
-        <tr><td><a  href="#array_list_delete_all">int array_list_delete_all(ArrayList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</a></td></tr>
-        <tr><td><a  href="#array_list_contains">bool array_list_contains (ArrayList* list, void* key, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#array_list_contains_and_free_key">bool array_list_contains_and_free_key (ArrayList* list, void* key, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#array_list_indexOf">int array_list_indexOf (ArrayList* list, void* key, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#array_list_indexOf_and_free_key">int array_list_indexOf_and_free_key (ArrayList* list, void* key, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#array_list_value_at">void* array_list_value_at (ArrayList* list, int index);</a></td></tr>
-        <tr><td><a  href="#array_list_front">void* array_list_front (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_back">void* array_list_back (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_is_empty">bool array_list_is_empty (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_size">int array_list_size (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_capacity">int array_list_capacity (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_equals">bool array_list_equals (ArrayList* list1, ArrayList* list2, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#array_list_reverse">void array_list_reverse(ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_sort">bool array_list_sort (ArrayList* list, utility_compare compare_callback);</a></td></tr>
-        <tr><td><a  href="#clear_array_list">void clear_array_list (ArrayList*  list, bool free_key);</a></td></tr>
-        <tr><td><a  href="#free_array_list">void free_array_list (ArrayList*  list, bool free_key);</a>
-        <tr><td><a  href="#create_array_list_iterator">ArrayListIterator* create_array_list_iterator (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#create_array_list_reverse_iterator">ArrayListIterator* create_array_list_reverse_iterator (ArrayList* list);</a></td></tr>
-        <tr><td><a  href="#array_list_iterator_has_next">bool array_list_iterator_has_next (ArrayListIterator* iterator);</a></td></tr>
-        <tr><td><a  href="#array_list_iterator_has_previous">bool array_list_iterator_has_previous (ArrayListIterator* iterator);</a></td></tr>
-        <tr><td><a  href="#array_list_iterator_next">void* array_list_iterator_next (ArrayListIterator* iterator);</a></td></tr>
-        <tr><td><a  href="#array_list_iterator_previous">void* array_list_iterator_previous (ArrayListIterator* iterator);</a>
-        <tr><td><a  href="#reset_array_list_iterator">void reset_array_list_iterator (ArrayListIterator* iterator);</a></td></tr>
-        <tr><td><a  href="#free_array_list_iterator">void free_array_list_iterator (ArrayListIterator* iterator);</a></td></tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="container">
-    <h5 style="padding-top: 50px;">Function description</h5>
-    <div class="function-description">
-        <table id="create_empty_array_list">
-            <tr style="background: #F0F0F0">
-                <th>ArrayList* create_empty_array_list (int initial_capacity);</th>
-            </tr>
-            <tr><td><ul>
-                <li>creates a new array list on heap</li>
-                <li>returns pointer to newly created arraylist if succeeds otherwise returns NULL</li>
-                <li>asserts that initial capacity is a positive integer</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_insert_at">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_insert_at (ArrayList* list, void* value, int index);</th>
-            </tr>
-            <tr><td><ul>
-                <li>inserts value at given index in array list</li>
-                <li>available indices are [0...N] where N is the size of the list</li>
-                <li>returns true if succeeds otherwise returns false</li>
-                <li>asserts that list, list's array aren't NULL and index is in bound</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_insert_front">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_insert_front (ArrayList* list, void* value);</th>
-            </tr>
-            <tr><td><ul>
-                <li>inserts value at front of array list</li>
-                <li>returns true if succeeds otherwise returns false</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_insert_back">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_insert_back (ArrayList* list, void* value);</th>
-            </tr>
-            <tr><td><ul>
-                <li>inserts value at back of array list</li>
-                <li>returns true if succeeds otherwise returns false</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes amortized constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_delete_at">
-            <tr style="background: #F0F0F0">
-                <th>void* array_list_delete_at (ArrayList* list, int index);</th>
-            </tr>
-            <tr><td><ul>
-                <li>deletes value at given index in array list</li>
-                <li>available indices are [0...N-1] where N is the size of the list</li>
-                <li>returns the value at given index</li>
-                <li>asserts that list, list's array aren't NULL and index is in bound</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_delete_front">
-            <tr style="background: #F0F0F0">
-                <th>void* array_list_delete_front (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>deletes value from front of array list</li>
-                <li>returns the value at given index if exist otherwise returns NULL</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_delete_back">
-            <tr style="background: #F0F0F0">
-                <th>void* array_list_delete_back (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>deletes value from back of array list</li>
-                <li>returns the value at given index if exist otherwise returns NULL</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes amortized constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_delete">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_delete(ArrayList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</th>
-            </tr>
-            <tr><td><ul>
-                <li>deletes the 1st occurrence of key in array list if exist</li>
-                <li>optionally frees the memory allocated to key and value in array list</li>
-                <li>returns true if deletion succeeds otherwise returns false</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_delete_all">
-            <tr style="background: #F0F0F0">
-                <th>int array_list_delete_all(ArrayList* list, void* key, utility_compare compare_callback, bool free_key, bool free_list_key);</th>
-            </tr>
-            <tr><td><ul>
-                <li>deletes all occurrences of key in array list if exist</li>
-                <li>optionally frees the memory allocated to key and value in array list</li>
-                <li>returns the count of number of items deleted in array list</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_contains">
-            <tr style="background: #F0F0F0">
-                <th> bool array_list_contains (ArrayList* list, void* key, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>searches for key in given array list</li>
-                <li>returns true if key exist in array list otherwise returns false</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_contains_and_free_key">
-            <tr style="background: #F0F0F0">
-                <th> bool array_list_contains_and_free_key (ArrayList* list, void* key, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>searches for key in given array list</li>
-                <li>frees the memory allocated to key as operation finishes</li>
-                <li>returns true if key exist in array list otherwise returns false</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_indexOf">
-            <tr style="background: #F0F0F0">
-                <th> int array_list_indexOf (ArrayList* list, void* key, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>searches for key in given array list</li>
-                <li>returns the index of 1st occurrence of key in array list if exist otherwise returns -1</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_indexOf_and_free_key">
-            <tr style="background: #F0F0F0">
-                <th> int array_list_indexOf_and_free_key (ArrayList* list, void* key, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>searches for key in given array list</li>
-                <li>frees the memory allocated to key as operation finishes</li>
-                <li>returns the index of 1st occurrence of key in array list if exist otherwise returns -1</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_value_at">
-            <tr style="background: #F0F0F0">
-                <th> void* array_list_value_at (ArrayList* list, int index);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the value at given index in array list</li>
-                <li>asserts that list, list's array aren't NULL and index is in bound</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_front">
-            <tr style="background: #F0F0F0">
-                <th> void* array_list_front (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the value at front of array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_back">
-            <tr style="background: #F0F0F0">
-                <th> void* array_list_back (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the value at back of array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_is_empty">
-            <tr style="background: #F0F0F0">
-                <th> bool array_list_is_empty (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns true if arraylist is empty otherwise returns false</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_size">
-            <tr style="background: #F0F0F0">
-                <th> int array_list_size (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the size of the array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_capacity">
-            <tr style="background: #F0F0F0">
-                <th> int array_list_capacity (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the capacity of the array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_equals">
-            <tr style="background: #F0F0F0">
-                <th> bool array_list_equals (ArrayList* list1, ArrayList* list2, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns true if content of two lists are same</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_reverse">
-            <tr style="background: #F0F0F0">
-                <th> void array_list_reverse (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>reverses the content of array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_sort">
-            <tr style="background: #F0F0F0">
-                <th> bool array_list_sort (ArrayList* list, utility_compare compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>uses merge-sort algorithm to sort the content of array list according to callback</li>
-                <li>returns true if successfully sorts the arraylist otherwise returns false</li>
-                <li>asserts that list, list's array and callback aren't NULL</li>
-                <li>takes linearithmic (n lgn) time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="clear_array_list">
-            <tr style="background: #F0F0F0">
-                <th> void clear_array_list (ArrayList* list, bool free_key);</th>
-            </tr>
-            <tr><td><ul>
-                <li>clears the content of array lisy</li>
-                <li>optionally frees the memory allocated to values in array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="free_array_list">
-            <tr style="background: #F0F0F0">
-                <th> void free_array_list (ArrayList* list, bool free_key);</th>
-            </tr>
-            <tr><td><ul>
-                <li>frees the memory allocated to array lisy</li>
-                <li>optionally frees the memory allocated to values in array list</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes linear time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_array_list_iterator">
-            <tr style="background: #F0F0F0">
-                <th>ArrayListIterator* create_array_list_iterator (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>creates an iterator associated with given array list</li>
-                <li>returns a pointer to newly created iterator if succeeds otherwise returns NULL</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_array_list_reverse_iterator">
-            <tr style="background: #F0F0F0">
-                <th>ArrayListIterator* create_array_list_reverse_iterator (ArrayList* list);</th>
-            </tr>
-            <tr><td><ul>
-                <li>creates a reverse iterator associated with given array list</li>
-                <li>returns a pointer to newly created iterator if succeeds otherwise returns NULL</li>
-                <li>asserts that list, list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_iterator_has_next">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_iterator_has_next (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns true if iterator can move to next node from current node</li>
-                <li>asserts that iterator, iterator'list, iterator'list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_iterator_has_previous">
-            <tr style="background: #F0F0F0">
-                <th>bool array_list_iterator_has_previous (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns true if iterator can move to previous node from current node</li>
-                <li>asserts that iterator, iterator'list, iterator'list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_iterator_next">
-            <tr style="background: #F0F0F0">
-                <th>void* array_list_iterator_next (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the value of the current node and move iterator to next node</li>
-                <li>asserts that iterator, iterator'list, iterator'list's array aren't NULL and iterator's next node exist</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="array_list_iterator_previous">
-            <tr style="background: #F0F0F0">
-                <th>void* array_list_iterator_previous (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the value of the current node and move iterator to previous node</li>
-                <li>asserts that iterator, iterator'list, iterator'list's array aren't NULL and iterator's previous node exist</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="reset_array_list_iterator">
-            <tr style="background: #F0F0F0">
-                <th>void reset_array_list_iterator (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>resets the array list iterator to its first or last node of list according to its type</li>
-                <li>asserts that iterator, iterator'list, iterator'list's array aren't NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="free_array_list_iterator">
-            <tr style="background: #F0F0F0">
-                <th>void free_array_list_iterator (ArrayListIterator* iterator);</th>
-            </tr>
-            <tr><td><ul>
-                <li>frees the memory allocated to iterator</li>
-                <li>asserts that iterator is not NULL</li>
-                <li>takes constant time</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-    </div>
-
-</div>
 <div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
     <p style="text-align: center">

@@ -129,9 +129,9 @@
     <a href="#linked_stack_peek">void* linked_stack_peek(Stack* stack);</a><br>
     <a href="#linked_stack_size">int linked_stack_size(Stack* stack);</a><br>
     <a href="#linked_stack_size">bool linked_stack_is_empty(Stack* stack);</a><br>
-    <a href="#linked_stack_indexOf">int linked_stack_indexOf(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</a><br>
-    <a href="#linked_stack_contains">bool linked_stack_contains(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</a><br>
-    <a href="#linked_stack_equals">bool linked_stack_equals(Stack* stack1, Stack* stack2, utility_compare compare_callback);</a><br>
+    <a href="#linked_stack_indexOf">int linked_stack_indexOf(Stack* stack, void* key, Comparator compare_callback, bool free_key);</a><br>
+    <a href="#linked_stack_contains">bool linked_stack_contains(Stack* stack, void* key, Comparator compare_callback, bool free_key);</a><br>
+    <a href="#linked_stack_equals">bool linked_stack_equals(Stack* stack1, Stack* stack2, Comparator compare_callback);</a><br>
     <a href="#reset_linked_stack">void reset_linked_stack(Stack* stack, bool free_keys);</a><br>
     <a href="#free_linked_stack">void free_linked_stack(Stack* stack, bool free_keys);</a><br>
     <a href="#create_linked_stack_iterator">StackIterator* create_linked_stack_iterator(Stack* stack);</a><br>
@@ -207,7 +207,7 @@
         </table>
         <table id="linked_stack_indexOf">
             <tr style="background: #F0F0F0">
-                <th>int linked_stack_indexOf(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</th>
+                <th>int linked_stack_indexOf(Stack* stack, void* key, Comparator compare_callback, bool free_key);</th>
             </tr>
             <tr><td><ul>
                 <li>returns the index of 1st occurrence of key in stack if exist otherwise returns -1</li>
@@ -218,7 +218,7 @@
         </table>
         <table id="linked_stack_contains">
             <tr style="background: #F0F0F0">
-                <th>bool linked_stack_contains(Stack* stack, void* key, utility_compare compare_callback, bool free_key);</th>
+                <th>bool linked_stack_contains(Stack* stack, void* key, Comparator compare_callback, bool free_key);</th>
             </tr>
             <tr><td><ul>
                 <li>returns true if stack contains key otherwise returns false</li>
@@ -229,7 +229,7 @@
         </table>
         <table id="linked_stack_equals">
             <tr style="background: #F0F0F0">
-                <th>bool linked_stack_equals(Stack* stack1, Stack* stack2, utility_compare compare_callback);</th>
+                <th>bool linked_stack_equals(Stack* stack1, Stack* stack2, Comparator compare_callback);</th>
             </tr>
             <tr><td><ul>
                 <li>returns true if both stack contains same data</li>
