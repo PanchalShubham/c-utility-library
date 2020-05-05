@@ -103,8 +103,8 @@ void printLinkedList(LinkedList* linkedList){
 
 /*performs tests on linked list*/
 void performLinkedListTest(){
-    /*create a new linked list with capacity of 10*/
-    LinkedList* linkedList = new_linked_list(10);
+    /*create a new linked list*/
+    LinkedList* linkedList = new_linked_list();
 
     /*insert 20 at front of LinkedList - note use of wrappers*/
     linked_list_insert_front(linkedList, wrap_int(20));

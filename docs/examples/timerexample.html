@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | timer.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/Timer.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implementation of Timer using system gettimeofday!<br>
+        Designed for running time analysis of algoritms!<br>
+        Timer is <strong>not syncronized</strong>!<br>
+        All operations are done in constant time!<br> <br>
+    </p>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Example</h5>
+    <pre><code>
+/*include necessary header - change path as per your need*/
+#include "../utility/release@2020.1/timer.h"
+#include "../utility/release@2020.1/arrays.h"
+
+
+/*define an indices comparator - how values of two arrays are to be compared*/
+/*compares array[i] with key and returns -1, 0 or 1 according to less than, equals to or greater than*/
+//typedef int(*ArrayIndicesComparator)(const void* array1, const void* array2, int i, int j);
+int timerTestArrayIndicesComparator(const void* array1, const void* array2, int i, int j){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    int val1 = ((int*)array1)[i];
+    int val2 = ((int*)array2)[j];
+
+    /*make a comparison and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+/*define an indices swapper - how values at index i and j are to be swapped*/
+//typedef void(*ArrayIndicesSwapper)(void* array, int i, int j);
+void timerTestArrayIndicesSwapper(void* array, int i, int j){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    int val1 = ((int*)array)[i];
+    int val2 = ((int*)array)[j];
+
+    /*update values*/
+    ((int*)array)[i] = val2;
+    ((int*)array)[j] = val1;
+}
+
+
+/*performs a test on timer*/
+void performTimerTest(){
+
+    /*create a new random integer array of size 10000 on heap*/
+    int N = 100000;
+    int* intArray = new_random_int_array(N);
+
+    /*create a new timer*/
+    Timer* timer = new_timer();
+
+    /*start timer before calling quick-sort*/
+    timer_start(timer);
+    /*sort the array[0...N - 1] using quick sort algorithm*/
+    quick_sort(intArray, 0, N - 1, timerTestArrayIndicesComparator,timerTestArrayIndicesSwapper);
+    /*stop timer after finishing quick-sort*/
+    timer_stop(timer);
+
+    /*get the time elapsed*/
+    long long int timeElapsed = timer_time_elapsed(timer);
+    printf ("Time elapsed: %lld (in us - microseconds)\n", timeElapsed);
+
+    /*free memory allocated to array*/
+    free_array(intArray);
+    /*fre memory allocated to timer*/
+    free_timer(timer);
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../../LICENSE">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

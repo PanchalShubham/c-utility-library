@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | arrays.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/arrays.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implements searching, sorting, shuffling, etc, algorithms for arrays!
+    </p>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Typedefs</h5>
+    <pre><code>
+/*compares array1[i] with array2[j] and returns -1, 0 or 1 accordingly*/
+typedef int(*ArrayIndicesComparator)(const void* array1, const void* array2, int i, int j);
+
+/*compares key with array at index i i.e. array[i] & key*/
+typedef int(*ArrayKeyComparator)(const void* array, const void* key, int i) ;
+
+/*swaps the elements in array at index i and j*/
+typedef void(*ArrayIndicesSwapper)(void* array, int i, int j);
+
+/*copies the value at index i from source array to destination array*/
+typedef void(*ArrayIndicesCopier)(const void* source, void* destination, int sourceIndex, int destinationIndex);
+    </code></pre>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Example</h5>
+    <pre><code>
+/*include necessary headers - modify path as per your requirement*/
+#include "../utility/release@2020.1/arrays.h"
+
+/*define an indices comparator - how values of two arrays are to be compared*/
+/*compares array[i] with key and returns -1, 0 or 1 according to less than, equals to or greater than*/
+//typedef int(*ArrayIndicesComparator)(const void* array1, const void* array2, int i, int j);
+int arrayIndicesComparator(const void* array1, const void* array2, int i, int j){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    int val1 = ((int*)array1)[i];
+    int val2 = ((int*)array2)[j];
+
+    /*make a comparison and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+
+/*define a key comparator - how values of array and key to be compared*/
+/*compares array[i] with key and returns -1, 0 or 1 according to less than, equals to or greater than*/
+//typedef int(*ArrayKeyComparator)(const void* array, const void* key, int i);
+int arrayKeyComparator(const void* array, const void* key, int i){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    int val1 = ((int*)array)[i];
+    int val2 = *((int*)key);
+
+    /*make a comparison and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+/*define an indices swapper - how values at index i and j are to be swapped*/
+//typedef void(*ArrayIndicesSwapper)(void* array, int i, int j);
+void arrayIndicesSwapper(void* array, int i, int j){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    int val1 = ((int*)array)[i];
+    int val2 = ((int*)array)[j];
+
+    /*update values*/
+    ((int*)array)[i] = val2;
+    ((int*)array)[j] = val1;
+}
+
+/*define how value from index is to be copied to another index*/
+//typedef void(*ArrayIndicesCopier)(const void* source, void* destination, int sourceIndex, int destinationIndex);
+void arrayIndicesCopier(const void* source, void* destination, int sourceIndex, int destinationIndex){
+    /*cast array and keys to appropriate type and fetch values*/
+    /*here we know we have array of integers so we cant to int* */
+    ((int*)destination)[destinationIndex] = ((int*)source)[sourceIndex];
+}
+
+
+/*prints the content of array to console*/
+void printArray(int* array, int N, char* msg){
+    printf ("%s: ", msg);
+    for (int i = 0; i < N; ++i)
+        printf ("%d ", array[i]);
+    printf ("\n");
+}
+
+
+/*performs the tests on array*/
+void performArraysTest(){
+    /*create a new random integer array of size 10 on heap*/
+    int* intArray = new_random_int_array(10);
+
+    /*print the content of array to console*/
+    printArray(intArray, 10, "Original Array");
+
+    /*sort the array[0...9] using quick sort algorithm*/
+    quick_sort(intArray, 0, 9, arrayIndicesComparator, arrayIndicesSwapper);
+    /*print the content of array to console*/
+    printArray(intArray, 10, "After quick-sort");
+
+    /*shuffle the content of array[1...8]*/
+    shuffle_array(intArray, 1, 8, arrayIndicesSwapper);
+    /*print the content of array to console*/
+    printArray(intArray, 10, "Shuffled in range [1...8]");
+
+    /*sort the array[0...9] using merge sort algorithm*/
+    /*WE NEED AN AUXILIARY FOR THAT*/
+    int* auxArray = new_int_array(10);
+    merge_sort(intArray, auxArray, 0, 9, arrayIndicesComparator, arrayIndicesCopier);
+    /*print the content of array to console*/
+    printArray(intArray, 10, "After merge-sort");
+
+    /*search for element 12345 in array[0...9] using binary search*/
+    int index1 = binary_search(intArray, 0, 9, wrap_int(12345), arrayKeyComparator);
+    printf ("index of 12345: %d\n", index1);
+
+    /*search for element 2nd element of array in array[0...9] using binary search*/
+    int val1 = intArray[1];
+    int index2 = binary_search(intArray, 0, 9, wrap_int(val1), arrayKeyComparator);
+    printf ("index of %d: %d\n", val1, index2);
+
+    /*reverse the content of array*/
+    reverse_array(intArray, 0, 9, arrayIndicesSwapper);
+    /*print the content of array to console*/
+    printArray(intArray, 10, "Reversed");
+
+
+    /*sort the array[2..5] using insertion sort algorithm*/
+    insertion_sort(intArray, 2, 5, arrayIndicesComparator, arrayIndicesSwapper);
+    /*print the content of array to console*/
+    printArray(intArray, 10, "After insertion-sort in range [2...5]");
+
+    /*search for element 12345 in array[0...9] using linear search*/
+    int index3 = linear_search(intArray, 0, 9, wrap_int(12345), arrayKeyComparator);
+    printf ("index of 12345: %d\n", index3);
+
+    /*search for element 2nd element of array in array[0...9] using linear search*/
+    int val2 = intArray[1];
+    int index4 = linear_search(intArray, 0, 9, wrap_int(val2), arrayKeyComparator);
+    printf ("index of %d: %d\n", val2, index4);
+
+    /*free memory allocated to both arrays on heap*/
+    free_array(intArray); free_array(auxArray);
+
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../../LICENSE">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

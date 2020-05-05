@@ -31,12 +31,6 @@
             background: white;
             color: black;
         }
-
-        .heading{
-            margin-top: 20px;
-            border-next: 2px solid black;
-        }
-
         table {
             width: 100%;
             text-align: justify;
@@ -59,299 +53,131 @@
     <h3 style="padding-top: 50px;">utility/arrays.h</h3>
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
-        Implements searching, sorting, shuffling, etc, algorithms for arrays!<br> <br>
+        Implements searching, sorting, shuffling, etc, algorithms for arrays!<br>
+        <a href="examples/arraysexample.html">Example</a>
     </p>
-    The following piece of code shows some of the examples!
-    <pre><code class="c">
-    // create a new array filled with values in range [0...100] of size 10
-    int* intArray = create_random_int_array_upper_bound(10, 100);
-
-    // shuffles the content of array between indices 0 to 9 uniformly
-    shuffle_array(intArray, 0, 9, swap_indices_callback);
-
-
-
-    // create an auxiliary array for merge sort algorithm
-    int* auxArray = create_int_array(10);
-    // sort the array[0...9] using merge sort
-    merge_sort(intArray, auxArray, 0, 9, compare_indices_callback, copy_indices_callback);
-
-
-    // sort array[0...9] using quick sort
-    quick_sort(intArray, 0, 9, compare_indices_callback, swap_indices_callback);
-
-
-    // sort array[1...5] using insertion sort
-    insertion_sort(intArray, 1, 5, compare_indices_callback, swap_indices_callback);
-
-
-    // binary search on array - note the use of wrapper
-    printf ("index of 59: %d\n", binary_search(intArray, 0, 9, wrap_int(59), compare_key_callback));
-
-    </code></pre>
-
-    The following piece of code shows some of the callback implementation for int type!
-    <pre><code class="c">
-    /*compare array1[i] with array2[j]*/
-    int compare_indices_callback(const void* array1, const void* array2, int i, int j){
-        // cast pointers to appropriate types
-        int val1 = ((int*)array1)[i];
-        int val2 = ((int*)array2)[j];
-
-        // make comparison and return result
-        return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
-    }
-
-    /*swap(array[i], array[j])*/
-    void swap_indices_callback(void* array, int i, int j){
-        // cast pointers to appropriate types
-        int val1 = ((int*)array)[i];
-        int val2 = ((int*)array)[j];
-
-        // update the fields
-        ((int*)array)[i] = val2;
-        ((int*)array)[j] = val1;
-    }
-
-    /*destinationArray[destinationIndex] = sourceArray[sourceIndex]*/
-    void copy_indices_callback(const void* sourceArray, void* destinationArray, int sourceIndex, int destinationIndex){
-        // cast pointers to appropriate types and perform assignment
-        ((int*)destinationArray)[destinationIndex] = ((int*)sourceArray)[sourceIndex];
-    }
-
-    /*compares array[i] with key*/
-    int compare_key_callback(const void* array, const void* key, int i){
-        // cast pointers to appropriate types
-        int val1 = ((int*)array)[i];
-        int val2 = *((int*)key);
-
-        // make comparison and return result
-        return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
-    }
-
-    </code></pre>
-
 </div>
 
 <div class="container">
-    <h5 style="padding-top: 50px;">Function summary</h5>
-    <a href="#create_int_array">int* create_int_array(int N);</a><br>
-    <a href="#create_and_fill_int_array">int* create_and_fill_int_array(int N, int value);</a><br>
-    <a href="#create_random_int_array">int* create_random_int_array(int N);</a><br>
-    <a href="#create_random_int_array_upper_bound">int* create_random_int_array_upper_bound(int N, int upper_bound);</a><br>
-    <a href="#create_random_int_array_range">int* create_random_int_array_range(int N, int lower_bound, int upper_bound);</a><br>
-    <a href="#create_double_array">double* create_double_array(int N);</a><br>
-    <a href="#create_and_fill_double_array">double* create_and_fill_double_array(int N, double value);</a><br>
-    <a href="#create_random_double_array">double* create_random_double_array(int N);</a><br>
-    <a href="#create_random_double_array_upper_bound">double* create_random_double_array_upper_bound(int N, double upper_bound);</a><br>
-    <a href="#create_random_double_array_range">double* create_random_double_array_range(int N, double lower_bound, double upper_bound);</a><br>
-    <a href="#shuffle_array">void shuffle_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</a><br>
-    <a href="#reverse_array">void reverse_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</a><br>
-    <a href="#linear_search">int linear_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</a><br>
-    <a href="#binary_search">int binary_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</a><br>
-    <a href="#insertion_sort">void insertion_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</a><br>
-    <a href="#quick_sort">void quick_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</a>
-    <a href="#merge_sort">void merge_sort(void* array, void* auxiliary_array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesCopier copy_callback);</a><br>
-    <a href="#free_array">void free_array(void* array);</a><br>
+    <h5 style="padding-top: 50px;">Typedefs</h5>
+    <pre><code>
+/*compares array1[i] with array2[j] and returns -1, 0 or 1 accordingly*/
+typedef int(*ArrayIndicesComparator)(const void* array1, const void* array2, int i, int j);
+
+/*compares key with array at index i i.e. array[i] & key*/
+typedef int(*ArrayKeyComparator)(const void* array, const void* key, int i) ;
+
+/*swaps the elements in array at index i and j*/
+typedef void(*ArrayIndicesSwapper)(void* array, int i, int j);
+
+/*copies the value at index i from source array to destination array*/
+typedef void(*ArrayIndicesCopier)(const void* source, void* destination, int sourceIndex, int destinationIndex);
+    </code></pre>
 </div>
 
 <div class="container">
-    <h5 style="padding-top: 50px;">Function description</h5>
-    <div class="function-description">
-        <table id="create_int_array">
-            <tr style="background: #F0F0F0">
-                <th>int* create_int_array(int N);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N integers on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>do not populate the array</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_and_fill_int_array">
-            <tr style="background: #F0F0F0">
-                <th>int* create_and_fill_int_array(int N, int value);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N integers on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with given values</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_int_array">
-            <tr style="background: #F0F0F0">
-                <th>int* create_random_int_array(int N);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N integers on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_int_array_upper_bound">
-            <tr style="background: #F0F0F0">
-                <th>int* create_random_int_array_upper_bound(int N, int upper_bound);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N integers on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers in range [0...upper_bound]</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_int_array_range">
-            <tr style="background: #F0F0F0">
-                <th>int* create_random_int_array_range(int N, int lower_bound, int upper_bound);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N integers on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers in range [lower_bound...upper_bound]</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
+    <h5 style="padding-top: 50px;">Functions summary</h5>
+    <pre><code>
 
-        <table id="create_double_array">
-            <tr style="background: #F0F0F0">
-                <th>double* create_double_array(int N);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N doubles on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>do not populate the array</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_and_fill_double_array">
-            <tr style="background: #F0F0F0">
-                <th>double* create_and_fill_double_array(int N, double value);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N doubles on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with given values</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_double_array">
-            <tr style="background: #F0F0F0">
-                <th>double* create_random_double_array(int N);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N doubles on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers in range [0...1]</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_double_array_upper_bound">
-            <tr style="background: #F0F0F0">
-                <th>double* create_random_double_array_upper_bound(int N, double upper_bound);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N doubles on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers in range [0...upper_bound]</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="create_random_double_array_range">
-            <tr style="background: #F0F0F0">
-                <th>double* create_random_double_array_range(int N, double lower_bound, double upper_bound);</th>
-            </tr>
-            <tr><td><ul>
-                <li>allocates memory for N doubles on heap and returns a pointer to first byte if succeed otherwise returns NULL</li>
-                <li>populates the array with random integers in range [lower_bound...upper_bound]</li>
-                <li>asserts that N is a positive integer</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="shuffle_array">
-            <tr style="background: #F0F0F0">
-                <th>void shuffle_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>shuffles the content of the array uniformly within given range</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="reverse_array">
-            <tr style="background: #F0F0F0">
-                <th>void reverse_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>reverses the content of array within given range</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="linear_search">
-            <tr style="background: #F0F0F0">
-                <th>int linear_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the index of 1st occurrence of key in array if exist otherwise returns -1</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="binary_search">
-            <tr style="background: #F0F0F0">
-                <th>int binary_search(const void* array, int low, int high, const void* key, ArrayKeyComparator compare_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>returns the index of 1st occurrence of key closes to middle of array if exist otherwise returns -1</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="insertion_sort">
-            <tr style="background: #F0F0F0">
-                <th>void insertion_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>sorts the array using insertion sort algorithm</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="quick_sort">
-            <tr style="background: #F0F0F0">
-                <th>void quick_sort(void* array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesSwapper swap_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>sorts the array using quick sort algorithm</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="merge_sort">
-            <tr style="background: #F0F0F0">
-                <th>void merge_sort(void* array, void* auxiliary_array, int low, int high, ArrayIndicesComparator compare_callback, ArrayIndicesCopier copy_callback);</th>
-            </tr>
-            <tr><td><ul>
-                <li>sorts the array using merge sort algorithm</li>
-                <li>asserts that array and callback aren't NULL and bounds are valid</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
-        <table id="free_array">
-            <tr style="background: #F0F0F0">
-                <th>void free_array(void* array);</th>
-            </tr>
-            <tr><td><ul>
-                <li>frees the memory allocated to array on heap</li>
-                <li>asserts that array isn't NULL</li>
-                <li>since release @2020.1</li>
-            </ul></td></tr>
-        </table>
+/*creates an integer array on heap of size N*/
+/*do not populate array - returns a pointer to first element of array if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ int* new_int_array(int N);
 
-    </div>
+/*creates an integer array on heap of size N and populates it with value*/
+/*returns a pointer to first element of array if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ int* new_int_array_with(int N, int value);
 
+/*creates a randomly populated integer array of size N in range [0...100]*/
+/*and returns a pointer to it if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ int* new_random_int_array(int N);
+
+
+
+
+
+
+
+/*creates a double array on heap of size N*/
+/*do not populate array - returns a pointer to first element of array if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ double* new_double_array(int N);
+
+/*creates a double array on heap of size N and populates with value*/
+/*returns a pointer to first element of array if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ double* new_double_array_with(int N, double value);
+
+/*creates a randomly populated double array of size N with values in range [0,1]*/
+/*returns a pointer to 1st element of array if succeeds otherwise returns a NULL pointer*/
+/*asserts that input size is greater than zero*/
+/*since release@2020.1*/
+ double* new_random_double_array(int N);
+
+
+
+
+
+
+
+/*shuffles the content of array uniformly in given range*/
+/*asserts that input array and callback not NULL and bounds are valid*/
+/*since release@2020.1*/
+ void shuffle_array(void* array, int low, int high, ArrayIndicesSwapper swap_callback);
+
+/*reverses the content of array*/
+/*asserts that array and callback aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ void reverse_array(void* array, int low,int high, ArrayIndicesSwapper indicesSwapper);
+
+
+
+
+/*returns the index of first occurrence of key in array if exist otherwise returns -1*/
+/*asserts that input array and callback aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ int linear_search(const void* array, int low, int high, const void* key, ArrayKeyComparator keyComparator);
+
+/*returns the index of key which is closest to middle of array if exist otherwise returns -1*/
+/*asserts that array, callback aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ int binary_search(const void* array, int low, int high, const void* key, ArrayKeyComparator keyComparator);
+
+
+
+
+
+
+
+/*sorts the input array using insertion sort algorithm*/
+/*asserts that array, auxiliary array and callbacks aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ void insertion_sort(void* array, int low, int high, ArrayIndicesComparator indicesComparator, ArrayIndicesSwapper indicesSwapper);
+
+/*sorts the given input array using quick sort algorithm*/
+/*asserts that array, auxiliary array and callbacks aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ void quick_sort(void* array, int low, int high, ArrayIndicesComparator indicesComparator, ArrayIndicesSwapper indicesSwapper);
+
+/*sorts the given input array using merge sort algorithm*/
+/*asserts that array, auxiliary array and callbacks aren't NULL and indices are in bound*/
+/*since release@2020.1*/
+ void merge_sort(void* array, void* auxiliary_array, int low, int high, ArrayIndicesComparator indicesComparator, ArrayIndicesCopier indicesCopier);
+
+
+
+/*frees the memory allocated to array*/
+/*asserts that input array is not NULL*/
+/*since release@2020.1*/
+ void free_array(void* array);
+    </code></pre>
 </div>
 <div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
