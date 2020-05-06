@@ -74,20 +74,20 @@
         </p>
         The following example creates a linked list of integers using wrappers!
         <pre><code class="c">
-            // create a new empty linked list
-            LinkedList* list = new_linked_list();
+// create a new empty linked list
+LinkedList* list = new_linked_list();
 
-            // insert integer 10 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
-            linked_list_insert_front(list, wrap_int(10));
+// insert integer 10 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
+linked_list_insert_front(list, wrap_int(10));
 
-            // insert integer 20 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
-            linked_list_insert_back(list, wrap_int(20));
+// insert integer 20 into list - but function expects void* so we use wrapper to wrap 10 under void* on heap
+linked_list_insert_back(list, wrap_int(20));
 
-            // get the value at index 0 in linked list but function returns void* so we unwrap it using wrapped_int_value
-            int value = wrapped_int_value(linked_list_value_at(list, 0));
+// get the value at index 0 in linked list but function returns void* so we unwrap it using wrapped_int_value
+int value = wrapped_int_value(linked_list_value_at(list, 0));
 
-            // get the value at index 0 in linked list but function returns void* so we unwrap it and free memory on heap
-            int value = unwrap_int(linked_list_delete_at(list, 0));
+// get the value at index 0 in linked list but function returns void* so we unwrap it and free memory on heap
+int value = unwrap_int(linked_list_delete_at(list, 0));
         </code></pre>
     </div>
 

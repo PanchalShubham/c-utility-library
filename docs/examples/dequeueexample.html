@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Set Title -->
-    <title>Utility Library | queue.h</title>
+    <title>Utility Library | dqueue.h</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
@@ -50,25 +50,24 @@
 </head>
 <body>
 <div class="container">
-    <h3 style="padding-top: 50px;">utility/queue.h</h3>
+    <h3 style="padding-top: 50px;">utility/dqueue.h</h3>
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
-        Implementation of queue (first in first out - FIFO) using singly linked list!<br>
-        queue is <strong>not syncronized</strong>!<br>
+        Implementation of de-queue (doubly ended queue) using doubly linked list!<br>
+        de-queue is <strong>not syncronized</strong>!<br>
         All operations are done in constant time except for search which takes linear time!<br>
     </p>
 </div>
 
 <div class="container">
     <h5 style="padding-top: 50px;">Example</h5>
-    <pre><code class="c">
-/*include necessary headers - modify path as per your need*/
-#include "../utility/release@2020.1/queue.h"
-
+    <pre><code>
+/*include necessary header file - change path according to your need*/
+#include "../utility/release@2020.1/dqueue.h"
 
 /*define how data of queue to be compared*/
 /*returns -1, 0 or 1 according to key1 > key2, key1 = key2 or key1 < key2*/
-int queueTestComparator(const void* key1, const void* key2){
+int dqueueTestComparator(const void* key1, const void* key2){
     /*first we need to cast void* to their appropriate type*/
     /*we know that we have queue of integers so we cast to int* */
     int val1 = *((int*)key1);
@@ -81,15 +80,15 @@ int queueTestComparator(const void* key1, const void* key2){
 
 
 /*print the content of queue using iterators*/
-void printQueue(Queue* queue){
-    printf ("Queue Status(FRONT to REAR):\n");
+void printDequeue(DeQueue* queue){
+    printf ("DeQueue Status(FRONT to REAR):\n");
     /*create an iterator for queue*/
-    QueueIterator* iterator = new_queue_iterator(queue);
+    DeQueueIterator* iterator = new_dqueue_iterator(queue);
 
     /*iterate through queue (FRONT to REAR)*/
-    while ( queue_iterator_has_next(iterator)){
+    while ( dqueue_iterator_has_next(iterator)){
         /*fetch the value from queue and point iterator to next node*/
-        void* val = queue_iterator_next(iterator);
+        void* val = dqueue_iterator_next(iterator);
 
         /*process data - print to console*/
         /*we need to cast void* to int because it is queue of int* */
@@ -98,48 +97,60 @@ void printQueue(Queue* queue){
     printf ("\n");
 }
 
-/*performs a test on queue*/
-void performQueueTest(){
+/*performs tests on dequeue*/
+void performDequeueTest(){
 
-    /*create a new queue*/
-    Queue* queue = new_queue();
+    /*create a new dequeue*/
+    DeQueue* deQueue = new_dqueue();
 
-    /*enqueue some data to queue - use wrappers for integers*/
-    queue_enQueue(queue, wrap_int(10));
-    queue_enQueue(queue, wrap_int(20));
-    queue_enQueue(queue, wrap_int(30));
+    /*insert items in de-queue*/
+    dqueue_enQueue_front(deQueue, wrap_int(30));
+    dqueue_enQueue_front(deQueue, wrap_int(20));
+    dqueue_enQueue_front(deQueue, wrap_int(10));
+    dqueue_enQueue_rear(deQueue, wrap_int(40));
+    dqueue_enQueue_rear(deQueue, wrap_int(50));
+    dqueue_enQueue_rear(deQueue, wrap_int(60));
 
-    /*print content of queue to console*/
-    printQueue(queue);
+    /*print the content of de-queue to console using iterators*/
+    printDequeue(deQueue);
 
-    /*get the data from front and rear of queue*/
-    /*note this do not delete data from queue*/
-    void* front = queue_front(queue);
-    void* rear = queue_rear(queue);
+    /*get the data from front and rear of de-queue*/
+    /*note this do not delete data from de-queue*/
+    void* front = dqueue_front(deQueue);
+    void* rear = dqueue_rear(deQueue);
     /*so we use wrapped_int_value instead of unwrap_int because*/
     /*we just want value and we don't want to delete*/
     printf ("Front: %d and Rear: %d\n", wrapped_int_value(front), wrapped_int_value(rear));
 
 
-    /*deQueue data from queue*/
-    /*this will delete data from queue*/
-    void* deQueued = queue_deQueue(queue);
-    /*we use unwrap_int because data is deleted from queue */
+    /*deQueue data from front of de-queue*/
+    /*this will delete data from de-queue*/
+    void* deQueued1 = dqueue_deQueue_front(deQueue);
+    /*we use unwrap_int because data is deleted from de-queue */
     /*so we free memory  on heap*/
-    printf ("deQueued: %d\n", unwrap_int(deQueued));
+    printf ("deQueued: %d\n", unwrap_int(deQueued1));
 
-    /*print content of queue to console*/
-    printQueue(queue);
+    /*deQueue data from rear of de-queue*/
+    /*this will delete data from de-queue*/
+    void* deQueued2 = dqueue_deQueue_rear(deQueue);
+    /*we use unwrap_int because data is deleted from de-queue */
+    /*so we free memory  on heap*/
+    printf ("deQueued: %d\n", unwrap_int(deQueued2));
 
-    /*get index of element 10 in queue*/
+    /*print content of de-queue to console*/
+    printDequeue(deQueue);
+
+    /*get index of element 10 in de-queue*/
     /*note we set freeKeyAtEnd so that memory allocated to 10 on heap is freed after search*/
-    int index = queue_indexOf(queue, wrap_int(10), queueTestComparator, true);
+    int index = dqueue_indexOf(deQueue, wrap_int(10), dqueueTestComparator, true);
     printf ("index of 10(from top of queue): %d\n", index);
 
-    /*free memory allocated to queue*/
+    /*free memory allocated to de-queue*/
     /*also free memory allocated to all integers on queue*/
-    free_queue(queue, true);
-}    </code></pre>
+    free_dqueue(deQueue, true);
+
+}
+    </code></pre>
 </div>
 <div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
