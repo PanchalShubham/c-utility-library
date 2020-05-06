@@ -31,21 +31,6 @@
             background: white;
             color: black;
         }
-
-        table {
-            width: 100%;
-            text-align: justify;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            padding: 5px;
-            font-size: 18px;
-            border: 2px solid black;
-        }
-        table{
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -54,7 +39,7 @@
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
         Implementation of stack (last in first out - LIFO) using singly linked list!<br>
-        stack is <strong>not syncronized</strong>!<br>
+        stack is <strong>not synchronized</strong>!<br>
         All operations are done in constant time except for search which takes linear time!<br>
     </p>
 </div>
@@ -137,10 +122,25 @@ void performStackTest(){
     </code></pre>
 </div>
 <div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+        Stack Status(TOP to BOTTOM):<br>
+        30<br>
+        20<br>
+        10<br>
+        Top: 30<br>
+        Popped: 30<br>
+        Stack Status(TOP to BOTTOM):<br>
+        20<br>
+        10<br>
+        index of 10(from top of stack): 1<br>
+    </div>
+</div>
+<div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
     <p style="text-align: center">
         Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
-        <a href="../../LICENSE">GNU General Public License</a> <br>
+        <a href="../../license.txt">GNU General Public License</a> <br>
     </p>
 </div>
 </body>

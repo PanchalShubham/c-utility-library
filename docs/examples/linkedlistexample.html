@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Set Title -->
-    <title>Utility Library | linkedlist.h</title>
+    <title>Utility Library | linkedlist.h - Example</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
@@ -31,31 +31,15 @@
             background: white;
             color: black;
         }
-
-        table {
-            width: 100%;
-            text-align: justify;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            padding: 5px;
-            font-size: 18px;
-            border: 0.5px solid black;
-            font-family: 'Libre Baskerville', serif;
-        }
-        table{
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h3 style="padding-top: 50px;">utility/linkedlist.h</h3>
+    <h3 style="padding-top: 50px;">utility/linkedlist.h - Example</h3>
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
         Doubly-linked-list implementation of list! Implements all optional list operations and permits all elements including NULL!<br>
-        linkedlist is <strong>not syncronized</strong>!<br>
+        linkedlist is <strong>not syncrhonized</strong>!<br>
         All memory allocation operations are done on heap!<br>
         Time and space complexity of operations are described below!<br>
     </p>
@@ -172,10 +156,22 @@ void performLinkedListTest(){
     </code></pre>
 </div>
 <div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+        10 20 30 40<br>
+        LinkedList contains 10<br>
+        ReversedList: 40 30 20 10<br>
+        SortedList: 10 20 30 40<br>
+        LinkedList's size: 4<br>
+        Deleted 10<br>
+        Freed linkedList :-)<br>
+    </div>
+</div>
+<div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
     <p style="text-align: center">
         Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
-        <a href="../../LICENSE">GNU General Public License</a>
+        <a href="../../license.txt">GNU General Public License</a>
     </p>
 </div>
 </body>

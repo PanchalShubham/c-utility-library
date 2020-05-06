@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Set Title -->
-    <title>Utility Library | arrays.h</title>
+    <title>Utility Library | arrays.h - Example</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
@@ -31,26 +31,12 @@
             background: white;
             color: black;
         }
-        table {
-            width: 100%;
-            text-align: justify;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            padding: 5px;
-            font-size: 18px;
-            border: 2px solid black;
-        }
-        table{
-            margin-top: 10px;
-        }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <h3 style="padding-top: 50px;">utility/arrays.h</h3>
+    <h3 style="padding-top: 50px;">utility/arrays.h - Example</h3>
+    <p>[since release@2020.1]</p>
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
         Implements searching, sorting, shuffling, etc, algorithms for arrays!
@@ -79,6 +65,7 @@ typedef void(*ArrayIndicesCopier)(const void* source, void* destination, int sou
     <pre><code>
 /*include necessary headers - modify path as per your requirement*/
 #include "../utility/release@2020.1/arrays.h"
+#include "../utility/release@2020.1/wrapper.h"
 
 /*define an indices comparator - how values of two arrays are to be compared*/
 /*compares array[i] with key and returns -1, 0 or 1 according to less than, equals to or greater than*/
@@ -199,10 +186,25 @@ void performArraysTest(){
     </code></pre>
 </div>
 <div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+        Original Array: 3 63 87 75 7 96 59 43 4 9<br>
+        After quick-sort: 3 4 7 9 43 59 63 75 87 96<br>
+        Shuffled in range [1...8]: 3 59 63 87 4 75 9 7 43 96<br>
+        After merge-sort: 3 4 7 9 43 59 63 75 87 96<br>
+        index of 12345: -1<br>
+        index of 4: 1<br>
+        Reversed: 96 87 75 63 59 43 9 7 4 3<br>
+        After insertion-sort in range [2...5]: 96 87 43 59 63 75 9 7 4 3<br>
+        index of 12345: -1<br>
+        index of 87: 1<br>
+    </div>
+</div>
+<div class="container">
     <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
     <p style="text-align: center">
         Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
-        <a href="../../LICENSE">GNU General Public License</a> <br>
+        <a href="../../license.txt">GNU General Public License</a> <br>
     </p>
 </div>
 </body>
