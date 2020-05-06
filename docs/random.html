@@ -60,201 +60,93 @@
         <h1 style="border: 0.5px solid black;"></h1>
         <p>
             Wrapper for random number/string generators! <br>
+            <a href="examples/randomexample.html">Example</a>
         </p>
-        The following piece of code shows some examples of random number/string generator
-        <pre><code class="c">
-            // generates a random integer in range [0...N - 1] both inclusive
-            int index = random_int_range(0, N - 1);
-
-            // generates a value in range [0...1] both inclusive
-            double probability = random_double();
-
-            // generates a random token of length 24
-            char* token = random_hex_string(24)
-
-            // generates a 6-digit random sequence of [0...9]
-            char* otp = random_decimal_string(6);
-        </code></pre>
     </div>
-
     <div class="container">
         <h5 style="padding-top: 50px;">Function summary</h5>
-        <a href="#randomize">void randomize(void);</a> <br>
-        <a href="#random_int">int random_int(void);</a> <br>
-        <a href="#random_int_upper_bound">int random_int_upper_bound(int upper_bound);</a> <br>
-        <a href="#random_int_range">int random_int_range(int lower_bound, int upper_bound);</a> <br>
-        <a href="#random_double">double random_double(void);</a> <br>
-        <a href="#random_double_upper_bound">double random_double_upper_bound(doule upper_bound);</a> <br>
-        <a href="#random_double_range">double random_double_range(double lower_bound, double upper_bound);</a> <br>
-        <a href="#random_binary_string">char* random_binary_string(int length);</a><br>
-        <a href="#random_octal_string">char* random_octal_string(int length);</a><br>
-        <a href="#random_decimal_string">char* random_decimal_string(int length);</a> <br>
-        <a href="#random_hex_string">char* random_hex_string(int length);</a> <br>
-        <a href="#random_printable_string">char* random_printable_string(int length);</a><br>
-        <a href="#random_alphabetical_string">char* random_alphabetical_string(int length);</a> <br>
-        <a href="#random_alphanumeric_string">char* random_alphanumeric_string(int length);</a><br>
-        <a href="#random_special_string">char* random_special_string(int length);</a><br>
-    </div>
+        <pre><code>
 
-    <div class="container">
-        <h5 style="padding-top: 50px;">Function description</h5>
-        <div class="function-description">
-            <table id="randomize">
-                <tr style="background: #F0F0F0">
-                    <th>void randomize(void);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>seeds the random number/string generator</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_int">
-                <tr style="background: #F0F0F0">
-                    <th>int random_int(void);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_int_upper_bound">
-                <tr style="background: #F0F0F0">
-                    <th>int random_int_upper_bound(int upper_bound);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random integer in range [0...upper_bound] both inclusive</li>
-                    <li>asserts that upper_bound &gt;= 0</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_int_range">
-                <tr style="background: #F0F0F0">
-                    <th>int random_int_range(int lower_bound, int upper_bound);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random integer in range [lower_bound...upper_bound] both inclusive</li>
-                    <li>asserts that 0 &lt;= lower_bound and lower_bound &lt;= upper_bound</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
+/*seeds the random number generator*/
+/*since release@2020.1*/
+void randomize(void);
 
-            <table id="random_double">
-                <tr style="background: #F0F0F0">
-                    <th>double random_double(void);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random double floating point value in range [0...1] both inclusive</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_double_upper_bound">
-                <tr style="background: #F0F0F0">
-                    <th>double random_double_upper_bound(double upper_bound);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random double-floating-point value in range [0...upper_bound] both inclusive</li>
-                    <li>asserts that upper_bound &gt;= 0</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_double_range">
-                <tr style="background: #F0F0F0">
-                    <th>double random_double_range(double lower_bound, double upper_bound);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random double in range [lower_bound...upper_bound] both inclusive</li>
-                    <li>asserts that 0 &lt;= lower_bound and lower_bound &lt;= upper_bound</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
+
+/*generates a random integer*/
+/*since release@2020.1*/
+int random_int(void);
+
+/*generates a random integer with given upper bound i.e. in range [0...upper_bound]*/
+/*asserts that upper bound is a non-negative integer*/
+/*since release@2020.1*/
+int random_int_upper_bound(int upper_bound);
+
+/*generates a random integer withing given bounds i.e. in range [lower_bound...upper_bound]*/
+/*asserts that 0 <= lower_bound <= upper_bound*/
+/*since release@2020.1*/
+int random_int_range(int lower_bound, int upper_bound);
+
+/*generates a random double in range [0,1]*/
+/*since release@2020.1*/
+double random_double(void);
+
+/*generates a random double with given upper bound i.e. in range [0...upper_bound]*/
+/*asserts that upper bound is a non-negative integer*/
+/*since release@2020.1*/
+double random_double_upper_bound(double upper_bound);
+
+
+/*generates a random double within given bounds i.e. in range [lower_bound...upper_bound]*/
+/*asserts that 0 <= lower_bound <= upper_bound*/
+/*since release@2020.1*/
+double random_double_range(double lower_bound, double upper_bound);
+
+/*generates a random binary string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_binary_string(int length);
+
+/*generates a random octal string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_octal_string(int length);
+
+/*generates a random decimal string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_decimal_string(int length);
+
+/*generates a random hexadecimal string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_hex_string(int length);
+
+
+/*generates a random printable string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_printable_string(int length);
+
+
+/*generates a random alphabetical string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_alphabetical_string(int length);
+
+/*generates a random alphabetical string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_alphanumeric_string(int length);
+
+
+/*generates a random special characters string of given length on HEAP and returns a pointer to string if succeeds otherwise returns a NULL pointer*/
+/*asserts that input length > 0*/
+/*since release@2020.1*/
+char* random_special_string(int length);
+
 
             
-            <table id="random_binary_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_binary_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random binary string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-
-            <table id="random_octal_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_octal_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random octal string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-
-            <table id="random_decimal_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_decimal_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random decimal string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-
-            <table id="random_hex_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_hex_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a <em>lowercase</em> random hexadecimal string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_printable_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_printable_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random string of printable characters of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_alphabetical_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_alphabetical_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random alphabetical string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_alphanumeric_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_alphanumeric_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random alphanumeric string of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-            <table id="random_special_string">
-                <tr style="background: #F0F0F0">
-                    <th>char* random_special_string(int length);</th>
-                </tr>
-                <tr><td><ul>
-                    <li>generates a random string of printable special characters of given length on <strong>heap</strong></li>
-                    <li>asserts that length is a positive integer</li>
-                    <li>since release @2020.1</li>
-                </ul></td></tr>
-            </table>
-
-        </div>
-
+        </code></pre>
     </div>
     <div class="container">
         <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>

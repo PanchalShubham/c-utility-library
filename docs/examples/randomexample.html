@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | random.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/random.h</h3>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Wrapper for random number/string generators! <br>
+    </p>
+</div>
+<div class="container">
+    <h5 style="padding-top: 50px;">Example</h5>
+    <pre><code>
+/*include necessary header - change path as per your need*/
+#include "../utility/release@2020.1/random.h"
+
+/*performs a test for random header*/
+void performRandomTest(){
+
+    /*seed random number generator*/
+    randomize();
+
+    /*print a random integer to console*/
+    printf ("%d\n", random_int());
+    /*print a random integer to console in range [0...100]*/
+    printf ("%d\n", random_int_upper_bound(100));
+    /*print a random integer to console in range [10...50]*/
+    printf ("%d\n", random_int_range(10, 50));
+
+    /*print a random double in range [0...1]*/
+    printf ("%lf\n", random_double());
+    /*print a random double in range [0...1.5]*/
+    printf ("%lf\n", random_double_upper_bound(1.5));
+    /*print a random double in range [1.5...2.5]*/
+    printf ("%lf\n", random_double_range(1.5, 2.5));
+
+
+
+    /*stores temporarily strings*/
+    char* string = NULL;
+    /*generate a random binary string and print to console*/
+    string = random_binary_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to binary string on heap*/
+    free (string);
+
+
+    /*generate a random octal string and print to console*/
+    string = random_octal_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to octal string on heap*/
+    free (string);
+
+    /*generate a random decimal and print to console*/
+    string = random_decimal_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to decimal string on heap*/
+    free (string);
+
+    /*generate a random hexadecimal string and print to console*/
+    string = random_hex_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to hexadecimal string on heap*/
+    free (string);
+
+    /*generate a random printable string and print to console*/
+    string = random_printable_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to printable string on heap*/
+    free (string);
+
+    /*generate a random alphabetical string and print to console*/
+    string = random_alphabetical_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to alphabetical string on heap*/
+    free (string);
+
+    /*generate a random alphanumeric string and print to console*/
+    string = random_alphanumeric_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to alphanumeric string on heap*/
+    free (string);
+
+    /*generate a random special character string and print to console*/
+    string = random_special_string(10);
+    printf ("%s\n", string);
+    /*free memory allocated to special character string on heap*/
+    free (string);
+
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../../LICENSE">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>
