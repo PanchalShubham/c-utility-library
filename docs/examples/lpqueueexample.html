@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | apqueue.h - Example</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/lpqueue.h</h3>
+    <p>[since release@2020.2]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Linked binary heap implementation of priority queue!<br>
+        LinkedPriorityQueue is <strong>not synchronized</strong>!<br>
+        All memory allocation operations are done on heap!<br>
+        Insertion and deletion takes logarithmic time!<br>
+        Searching takes linear time!<br>
+        <strong>since release@2020.2</strong><br>
+    </p>
+</div>
+
+<div class="container" id="summary">
+    <h5 style="padding-top: 50px;"><strong>Example</strong></h5>
+    <pre><code class="c">
+/*include necessary headers - modify path according to your need*/
+#include "../utility/release@2020.2/lpqueue.h"
+#include "../utility/release@2020.2/wrapper.h"
+
+/*we define how our values to be compared*/
+/*returns 1, 0 or -1 if object1 is greater than, equals to or smaller than object2*/
+int linkedPriorityQueueTestComparator(const void* object1, const void* object2){
+    /*cast objects to their appropriate type - int in this case*/
+    int val1 = *((int*)object1);
+    int val2 = *((int*)object2);
+
+    /*compare values and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+
+/*prints the content in pre-order fashion for binary heap(priority queue)*/
+void lpq_preOrder(LinkedPriorityQueueNode* root){
+    /*check if root is NULL*/
+    if (root != NULL){
+        /*print the content of root - we can cast void* to int* safely*/
+        /*because we know we have implemented priority queue of integers*/
+        printf ("%d ", *((int*)(root->data)));
+        /*traverse left subtree in pre-order fashion*/
+        lpq_preOrder(root->left);
+        /*traverse right subtree in pre-order fashion*/
+        lpq_preOrder(root->right);
+    }
+}
+
+/*prints the content of priority queue in pre-order fashion to console*/
+void printLPQ(LinkedPriorityQueue* queue, char* msg){
+    /*print the message to user*/
+    printf ("%s(size: %d)\n", msg, queue->size);
+    /*print content in pre-order fashion*/
+    lpq_preOrder(queue->root);
+}
+
+/*performs a test on linked priority queue*/
+void performLinkedPriorityQueueTest(){
+    /*create a new MAX priority queue with initial capacity of 10*/
+    LinkedPriorityQueue* queue = new_lpq(LPQ_MAX);
+
+    /*insert 15 - elements to priority queue randomly*/
+    printf ("Insertion order: ");
+    for (int i = 0; i < 15; ++i){
+        /*generate a random number for insertion in range [0...100]*/
+        int data = random_int_upper_bound(100);
+        lpq_add(queue, wrap_int(data), linkedPriorityQueueTestComparator);
+        printf ("%d ", data);
+    }
+    /*add one determined data to queue*/
+    lpq_add(queue, wrap_int(20), linkedPriorityQueueTestComparator);
+    printf ("%d ", 20);
+    printf ("\n");
+
+    /*print the status of queue to console*/
+    printLPQ(queue, "Queue after insertion: "); printf ("\n");
+
+    /*delete 13 elements from priority queue*/
+    for (int i = 0; i < 13; ++i){
+        /*extract data from queue*/
+        void* data = lpq_extract(queue, arrayPriorityQueueTestComparator);
+        /*print data to console*/
+        printf ("extracted %d\n", unwrap_int(data));
+    }
+
+    /*print the status of queue to console*/
+    printLPQ(queue, "Queue after deletions: "); printf ("\n");
+
+    /*check if priority queue contains a value 20*/
+    /*note that freeKeyAtEnd is set to true so that memory allocated to 20 on heap is freed*/
+    /*after the search operation is finished*/
+    printf ("contains 20? %d\n", lpq_contains(queue, wrap_int(20), arrayPriorityQueueTestComparator, true));
+
+    /*update the priority of node 20 to 100*/
+    bool result = lpq_replace(queue, wrap_int(20), wrap_int(100), arrayPriorityQueueTestComparator, true, true);
+    printf ("replaced? %s\n", result ? "true" : "false");
+    /*print the status of queue to console*/
+    printLPQ(queue, "Queue after replacement: "); printf ("\n");
+
+
+    /*print the maximum data of priority queue*/
+    printf ("root: %d\n", wrapped_int_value(lpq_root(queue)));
+
+    /*free memory allocated to queue*/
+    /*also free memory allocated to keys in queue - memory allocated for ints on heap*/
+    free_lpq(queue, true);
+    printf ("Frees linkedPriorityQueue :-)\n");
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+        Insertion order: 4 30 66 86 39 40 85 49 72 71 59 23 44 57 100 20 <br>
+        Queue after insertion: (size: 16) <br>
+        100 72 66 20 4 49 71 39 59 86 44 23 30 85 40 57 <br>
+        extracted 100 <br>
+        extracted 86 <br>
+        extracted 85 <br>
+        extracted 72 <br>
+        extracted 71 <br>
+        extracted 66 <br>
+        extracted 59 <br>
+        extracted 57 <br>
+        extracted 49 <br>
+        extracted 44 <br>
+        extracted 40 <br>
+        extracted 39 <br>
+        extracted 30 <br>
+        Queue after deletions: (size: 3) <br>
+        23 20 4 <br>
+        contains 20? 1 <br>
+        replaced? true <br>
+        Queue after replacement: (size: 3) <br>
+        100 23 4 <br>
+        root: 100 <br>
+        Frees linkedPriorityQueue :-) <br>
+    </div>
+</div>
+
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="../../license.txt" download="true">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>

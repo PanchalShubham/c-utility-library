@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | lpqueue.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/lpqueue.h</h3>
+    <p>[since release@2020.2]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Linked binary heap implementation of priority queue!<br>
+        LinkedPriorityQueue is <strong>not synchronized</strong>!<br>
+        All memory allocation operations are done on heap!<br>
+        Insertion and deletion takes logarithmic time!<br>
+        Searching takes linear time!<br>
+        <strong>since release@2020.2</strong><br>
+        <a href="examples/lpqueueexample.html">Example</a>
+    </p>
+</div>
+
+<div class="container" id="summary">
+    <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
+    <pre><code class="c">
+/*creates a new linked priority queue and returns a pointer to it if succeeds otherwise returns NULL*/
+/*asserts that type is valid*/
+/*since release@2020.2*/
+LinkedPriorityQueue* new_lpq(enum LinkedPriorityQueueType type);
+
+/*adds given data to linked priority queue and returns true if succeeds otherwise returns false*/
+/*asserts that queue and callback aren't NULL*/
+/*since release@2020.2*/
+bool lpq_add(LinkedPriorityQueue* pqueue, void* data, Comparator comparator);
+
+
+/*returns and removes the data with max/min priority in priority queue if exist otherwise returns NULL*/
+/*asserts that queue and callback aren't NULL*/
+/*since release@2020.2*/
+void* lpq_extract(LinkedPriorityQueue* pqueue, Comparator comparator);
+
+/*replace the 1st occurrence of key with newKey in priority if exist; returns true if succeeds otherwise returns false*/
+/*optionally frees the memory allocated to key and keyInQueue*/
+/*asserts that queue, queue's array, callback aren't NULL*/
+/*since release@2020.2*/
+bool lpq_replace(LinkedPriorityQueue* queue, void* oldKey, void* newKey, Comparator comparator, bool freeOldKey, bool freeKeyInQueue);
+
+
+/*returns the size of the linked priority queue*/
+/*asserts that priority queue is not NULL*/
+/*since release@2020.2*/
+int lpq_size(LinkedPriorityQueue* queue);
+
+
+/*returns true if priority queue is empty otherwise returns false*/
+/*asserts that priority queue is not NULL*/
+/*since release@2020.2*/
+bool lpq_is_empty(LinkedPriorityQueue* queue);
+
+
+/*returns the root of the priority queue if exist otherwise returns NULL*/
+/*asserts that queue isn't NULL*/
+/*since release@2020.2*/
+void* lpq_root(LinkedPriorityQueue* queue);
+
+/*returns true if priority queue contains given key otherwise returns false*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that queue and callback aren't NULL*/
+/*since release@2020.2*/
+bool lpq_contains(LinkedPriorityQueue* queue, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+/*frees the memory allocated to priority queue*/
+/*optionally frees the memory  allocated to nodes*/
+/*asserts that queue is not empty*/
+void free_lpq(LinkedPriorityQueue* queue, bool freeKeys);
+    </code></pre>
+</div>
+
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="../license.txt" download="true">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>

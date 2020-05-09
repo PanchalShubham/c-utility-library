@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | apqueue.h - Example</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/apqueue.h</h3>
+    <p>[since release@2020.2]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Resizable-array implementation of priority queue using binary heaps!<br>
+        ArrayPriorityQueue is <strong>not synchronized</strong>!<br>
+        Capacity of the queue is doubled if array priority queue is 100% filled!<br>
+        Capacity of the queue is halved if array priority queue is at most 25% filled!<br>
+        Theoretical maximum capacity of array priority queue is INT_MAX (2,147,483,647 on most platforms)<br>
+        All memory allocation operations are done on heap!<br>
+        Insertion and deletion takes logarithmic time!<br>
+        Searching takes linear time!<br>
+        <strong>since release@2020.2</strong><br>
+    </p>
+</div>
+
+<div class="container" id="summary">
+    <h5 style="padding-top: 50px;"><strong>Example</strong></h5>
+    <pre><code class="c">
+/*include necessary headers*/
+#include "../utility/release@2020.2/apqueue.h"
+#include "../utility/release@2020.2/wrapper.h"
+
+/*we define how our values to be compared*/
+/*returns 1, 0 or -1 if object1 is greater than, equals to or smaller than object2*/
+int arrayPriorityQueueTestComparator(const void* object1, const void* object2){
+    /*cast objects to their appropriate type - int in this case*/
+    int val1 = *((int*)object1);
+    int val2 = *((int*)object2);
+
+    /*compare values and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+/*prints the content of array priority queue to console*/
+void printAPQ(ArrayPriorityQueue* queue, char* msg){
+    /*give a message to user*/
+    printf ("%s(%d / %d)\n", msg, queue->size, queue->capacity);
+    /*get the size of the queue*/
+    int size = queue->size;
+    /*iterate through array*/
+    for (int i = 0; i < size; ++i)
+        printf ("%d ", wrapped_int_value(queue->array[i]));
+}
+
+/*performs a test on array priority queue*/
+void performArrayPriorityQueueTest(){
+    /*create a new MAx priority queue with initial capacity of 10*/
+    ArrayPriorityQueue* queue = new_apq(10, APQ_MAX);
+
+    /*insert 15 - elements to priority queue randomly*/
+    /*note that capacity of queue will be expanded*/
+    printf ("Insertion order: ");
+    for (int i = 0; i < 15; ++i){
+        /*generate a random number for insertion in range [0...100]*/
+        int data = random_int_upper_bound(100);
+        apq_add(queue, wrap_int(data), arrayPriorityQueueTestComparator);
+        printf ("%d ", data);
+    }
+    /*add one determined data to queue*/
+    apq_add(queue, wrap_int(20), arrayPriorityQueueTestComparator);
+    printf ("%d ", 20);
+    printf ("\n");
+
+    /*print the status of queue to console*/
+    printAPQ(queue, "Queue after insertion: "); printf ("\n");
+
+    /*delete 13 elements from priority queue*/
+    /*note the capacity will be shrinked*/
+    for (int i = 0; i < 13; ++i){
+        /*extract data from queue*/
+        void* data = apq_extract(queue, arrayPriorityQueueTestComparator);
+        /*print data to console*/
+        printf ("extracted %d\n", unwrap_int(data));
+    }
+
+    /*print the status of queue to console*/
+    printAPQ(queue, "Queue after deletions: "); printf ("\n");
+
+    /*check if priority queue contains a value 20*/
+    /*note that freeKeyAtEnd is set to true so that memory allocated to 20 on heap is freed*/
+    /*after the search operation is finished*/
+    printf ("index of 20: %d\n", apq_indexOf(queue, wrap_int(20), arrayPriorityQueueTestComparator, true));
+
+    /*update the priority of node 20 to 100*/
+    bool result = apq_replace(queue, wrap_int(20), wrap_int(100), arrayPriorityQueueTestComparator, true, true);
+    printf ("replaced? %s\n", result ? "true" : "false");
+    /*print the status of queue to console*/
+    printAPQ(queue, "Queue after replacement: "); printf ("\n");
+
+
+    /*print the maximum data of priority queue*/
+    printf ("root: %d\n", wrapped_int_value(apq_root(queue)));
+
+    /*free memory allocated to queue*/
+    /*also free memory allocated to keys in queue - memory allocated for ints on heap*/
+    free_apq(queue, true);
+    printf ("Frees arrayPriorityQueue :-)\n");
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+        Insertion order: 97 48 25 40 48 37 73 24 68 87 11 35 75 43 98 20 <br>
+        Queue after insertion: (16 / 20) <br>
+        98 87 97 48 68 73 75 24 40 48 11 25 35 37 43 20 <br>
+        extracted 98 <br>
+        extracted 97 <br>
+        extracted 87 <br>
+        extracted 75 <br>
+        extracted 73 <br>
+        extracted 68 <br>
+        extracted 48 <br>
+        extracted 48 <br>
+        extracted 43 <br>
+        extracted 40 <br>
+        extracted 37 <br>
+        extracted 35 <br>
+        extracted 25 <br>
+        Queue after deletions: (3 / 10) <br>
+        24 20 11 <br>
+        index of 20: 1 <br>
+        replaced? true <br>
+        Queue after replacement: (3 / 10) <br>
+        100 24 11 <br>
+        root: 100 <br>
+        Frees arrayPriorityQueue :-) <br>
+    </div>
+</div>
+
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="../../license.txt" download="true">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>
