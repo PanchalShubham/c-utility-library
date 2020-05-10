@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | rbt.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            text-align: justify;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            padding: 5px;
+            font-size: 18px;
+            border: 2px solid black;
+        }
+        table{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/rbt.h</h3>
+    <p>[since release@2020.2]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implementation of (left-leaning) Red-Black-Tree! <br>
+        RBT is <strong>not synchronized</strong>!<br>
+        All operations are done in logarithmic time!<br>
+        <a href="examples/rbtexample.html">Example</a>
+    </p>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function summary</h5>
+    <pre><code>
+/*allocates memory for a new RBT and return a pointer to it if succeeds otherwise returns NULL*/
+RBT* new_rbt(void);
+
+/*adds data to rbt if doesn't exist; if exist then optionally overwrites the data*/
+/*returns true if succeeds otherwise returns false*/
+/*asserts that rbt and comparator aren't NULL*/
+bool rbt_put(RBT* rbt, void* data, Comparator comparator, bool overwrite);
+
+
+/*returns the keys in rbt in a linked list if succeeds otherwise returns NULL*/
+/*assert that rbt is not NULL*/
+LinkedList* rbt_keys(RBT* rbt);
+
+/*returns the size of the rbt*/
+/*asserts that rbt is not NULL*/
+int rbt_size(RBT* rbt);
+
+/*returns true if rbt is empty otherwise returns false*/
+/*asserts that rbt is not NULL*/
+bool rbt_is_empty(RBT* rbt);
+
+/*returns the height of the rbt*/
+/*asserts that rbt is not NULL*/
+int rbt_height(RBT* rbt);
+
+/*returns the minimum node in rbt if exist otherwise returns NULL*/
+/*asserts that rbt is not NULL*/
+void* rbt_min(RBT* rbt);
+
+/*returns the maximum node in rbt if exist otherwise returns NULL*/
+/*asserts that rbt is not NULL*/
+void* rbt_max(RBT* rbt);
+
+/*returns the floor of given key in rbt if exist otherwise returns NULL*/
+/*optionally frees the memory allocated to key at the end of operation*/
+/*asserts that rbt and comparator are not NULL*/
+void* rbt_floor(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns the ceil of given key in rbt if exist otherwise returns NULL*/
+/*optionally frees the memory allocated to key at the end of operation*/
+/*asserts that rbt and comparator are not NULL*/
+void* rbt_ceil(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns the rank of given key in rbt if exist otherwise returns -1*/
+/*rank := number of nodes in tree that less than given node*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that rbt and comparator are not NULL*/
+int rbt_rank(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+
+
+/*returns the data that matches key in rbt if exist otherwise returns NULL*/
+/*optionally frees the memory allocated to key at the end of the search*/
+/*asserts that rbt and comparator are not NULL*/
+void* rbt_value(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns true if rbt contains given key*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that rbt and comparator are not NULL*/
+bool rbt_contains(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+
+
+/*returns and removes the minimum node in rbt if exist otherwise returns NULL*/
+/*asserts that rbt is not NULL*/
+void* rbt_remove_min(RBT* rbt);
+
+/*returns and removes the maximum node in rbt if exist otherwise returns NULL*/
+/*asserts that rbt is not NULL*/
+void* rbt_remove_max(RBT* rbt);
+
+/*returns and removes the key from rbt if exist otherwise returns NULL*/
+/*optionally frees the memory allocated to key at the end of the operation*/
+/*asserts that rbt and comparator are not NULL*/
+void* rbt_remove(RBT* rbt, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+
+/*frees the memory allocated to rbt*/
+/*optionally frees the memory allocated to its nodes*/
+/*asserts that rbt is not NULL*/
+void free_rbt(RBT* rbt, bool freeKeys);
+    </code></pre>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="../license.txt">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

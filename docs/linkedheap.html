@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Set Title -->
-    <title>Utility Library | lpqueue.h</title>
+    <title>Utility Library | linkedheap.h</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
@@ -35,74 +35,77 @@
 </head>
 <body>
 <div class="container">
-    <h3 style="padding-top: 50px;">utility/lpqueue.h</h3>
+    <h3 style="padding-top: 50px;">utility/linkedheap.h - Example</h3>
     <p>[since release@2020.2]</p>
     <h1 style="border: 0.5px solid black;"></h1>
     <p>
-        Linked binary heap implementation of priority queue!<br>
-        LinkedPriorityQueue is <strong>not synchronized</strong>!<br>
+        Linked binary trees implementation of binary heap!<br>
+        LinkedHeap is <strong>not synchronized</strong>!<br>
         All memory allocation operations are done on heap!<br>
         Insertion and deletion takes logarithmic time!<br>
         Searching takes linear time!<br>
         <strong>since release@2020.2</strong><br>
-        <a href="examples/lpqueueexample.html">Example</a>
+        <a href="examples/linkedheapexample.html">Example</a>
     </p>
 </div>
 
 <div class="container" id="summary">
     <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
     <pre><code class="c">
-/*creates a new linked priority queue and returns a pointer to it if succeeds otherwise returns NULL*/
+
+/*creates a new linked heap and returns a pointer to it if succeeds otherwise returns NULL*/
 /*asserts that type is valid*/
 /*since release@2020.2*/
-LinkedPriorityQueue* new_lpq(enum LinkedPriorityQueueType type);
+LinkedHeap* new_linked_heap(enum LinkedHeapType type);
 
-/*adds given data to linked priority queue and returns true if succeeds otherwise returns false*/
-/*asserts that queue and callback aren't NULL*/
+
+/*adds given data to linked heap and returns true if succeeds otherwise returns false*/
+/*asserts that heap and callback aren't NULL*/
 /*since release@2020.2*/
-bool lpq_add(LinkedPriorityQueue* pqueue, void* data, Comparator comparator);
+bool linked_heap_add(LinkedHeap* heap, void* data, Comparator comparator);
 
 
-/*returns and removes the data with max/min priority in priority queue if exist otherwise returns NULL*/
-/*asserts that queue and callback aren't NULL*/
+/*returns and removes the max/min data in heap if exist otherwise returns NULL*/
+/*asserts that heap and callback aren't NULL*/
 /*since release@2020.2*/
-void* lpq_extract(LinkedPriorityQueue* pqueue, Comparator comparator);
+void* linked_heap_extract(LinkedHeap* heap, Comparator comparator);
 
-/*replace the 1st occurrence of key with newKey in priority if exist; returns true if succeeds otherwise returns false*/
+
+/*replace the 1st occurrence of key with newKey in heap if exist; returns true if succeeds otherwise returns false*/
 /*optionally frees the memory allocated to key and keyInQueue*/
-/*asserts that queue, queue's array, callback aren't NULL*/
+/*asserts that heap, heap's array, callback aren't NULL*/
 /*since release@2020.2*/
-bool lpq_replace(LinkedPriorityQueue* queue, void* oldKey, void* newKey, Comparator comparator, bool freeOldKey, bool freeKeyInQueue);
+bool linked_heap_replace(LinkedHeap* heap, void* oldKey, void* newKey, Comparator comparator, bool freeOldKey, bool freeKeyInQueue);
 
 
-/*returns the size of the linked priority queue*/
-/*asserts that priority queue is not NULL*/
+/*returns the size of the linked heap*/
+/*asserts that heap is not NULL*/
 /*since release@2020.2*/
-int lpq_size(LinkedPriorityQueue* queue);
+int linked_heap_size(LinkedHeap* heap);
 
 
-/*returns true if priority queue is empty otherwise returns false*/
-/*asserts that priority queue is not NULL*/
+/*returns true if heap is empty otherwise returns false*/
+/*asserts that heap is not NULL*/
 /*since release@2020.2*/
-bool lpq_is_empty(LinkedPriorityQueue* queue);
+bool linked_heap_is_empty(LinkedHeap* heap);
 
 
-/*returns the root of the priority queue if exist otherwise returns NULL*/
-/*asserts that queue isn't NULL*/
+/*returns the root of the heap if exist otherwise returns NULL*/
+/*asserts that heap isn't NULL*/
 /*since release@2020.2*/
-void* lpq_root(LinkedPriorityQueue* queue);
+void* linked_heap_root(LinkedHeap* heap);
 
-/*returns true if priority queue contains given key otherwise returns false*/
+/*returns true if heap contains given key otherwise returns false*/
 /*optionally frees the memory allocated to key at the end*/
-/*asserts that queue and callback aren't NULL*/
+/*asserts that heap and callback aren't NULL*/
 /*since release@2020.2*/
-bool lpq_contains(LinkedPriorityQueue* queue, void* key, Comparator comparator, bool freeKeyAtEnd);
+bool linked_heap_contains(LinkedHeap* heap, void* key, Comparator comparator, bool freeKeyAtEnd);
 
 
-/*frees the memory allocated to priority queue*/
+/*frees the memory allocated to heap*/
 /*optionally frees the memory  allocated to nodes*/
-/*asserts that queue is not empty*/
-void free_lpq(LinkedPriorityQueue* queue, bool freeKeys);
+/*asserts that heap is not empty*/
+void free_linked_heap(LinkedHeap* heap, bool freeKeys);
     </code></pre>
 </div>
 
