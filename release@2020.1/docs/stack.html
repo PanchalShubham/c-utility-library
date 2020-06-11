@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | stack.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/stack.h</h3>
+    <p>[since release@2020.1]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Implementation of stack (last in first out - LIFO) using singly linked list!<br>
+        stack is <strong>not synchronized</strong>!<br>
+        All operations are done in constant time except for search which takes linear time!<br>
+        <a href="examples/stackexample.html">Example</a>
+    </p>
+</div>
+
+<div class="container">
+    <h5 style="padding-top: 50px;">Function summary</h5>
+    <pre><code>
+/*creates a new empty stack and returns a pointer to it if succeeds otherwise returns NULL*/
+/*since release@2020.1*/
+ Stack* new_stack(void);
+
+
+/*pushes data to stack and returns true if succeeds otherwise returns false*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ bool stack_push(Stack* stack, void* value);
+
+
+/*returns and remove the top element from stack if exist otherwise returns NULL*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ void* stack_pop(Stack* stack);
+
+/*returns but NOT remove the top element from stack if exist otherwise returns NULL*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ void* stack_peek(Stack* stack);
+
+
+/*returns true if stack is empty otherwise returns false*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ bool stack_is_empty(Stack* stack);
+
+/*returns the size of the stack*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ int stack_size(Stack* stack);
+
+
+/*returns the index of key from top of the stack if exist otherwise returns -1*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that stack and callback aren't NULL*/
+/*since release@2020.1*/
+ int stack_indexOf(Stack* stack, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns true if stack contains given key otherwise returns false*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that stack and callback aren't NULL*/
+/*since release@2020.1*/
+ bool stack_contains(Stack* stack, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+/*returns true if content of both stack are same otherwise returns false*/
+/*asserts that neither of the stack is NULL and callback is not NULL*/
+/*since release@2020.1*/
+ bool stack_equals(Stack* stack1, Stack* stack2, Comparator comparator);
+
+/*resets the content of stack i.e. empty stack*/
+/*optionally frees the memory allocated to values in nodes*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ void reset_stack(Stack* stack, bool freeKeysInStack);
+
+/*frees the memory allocated to stack*/
+/*optionally frees the memory allocated to values in nodes*/
+/*asserts that stack is not NULL*/
+/*since release@2020.1*/
+ void free_stack(Stack* stack, bool freeKeysInStack);
+
+
+
+
+
+/*creates a new  stack iterator and returns a pointer to it if succeeds otherwise returns NULL*/
+/*assert that stack is not NULL*/
+/*since release@2020.1*/
+ StackIterator* new_stack_iterator(Stack* stack);
+
+/*checks if  stack iterator has a next node*/
+/*assert that stack iterator is not NULL*/
+/*since release@2020.1*/
+ bool stack_iterator_has_next(StackIterator* iterator);
+
+/*point stack iterator to its next node and returns the value contained in current node*/
+/*assert that stack iterator is not NULL and points to a valid node*/
+/*since release@2020.1*/
+ void* stack_iterator_next(StackIterator* iterator);
+
+/*resets the stack iterator to point to 1st node*/
+/*asserts that stack iterator and its associated stack are not NULL*/
+/*since release@2020.1*/
+ void reset_stack_iterator(StackIterator* iterator);
+
+
+/*frees the memory allocated to iterator*/
+/*asserts that stack iterator is not NULL*/
+/*since release@2020.1*/
+ void free_stack_iterator(StackIterator* iterator);
+        
+    </code></pre>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a> - All rights reserved<br>
+        <a href="license.txt">GNU General Public License</a> <br>
+    </p>
+</div>
+</body>
+</html>

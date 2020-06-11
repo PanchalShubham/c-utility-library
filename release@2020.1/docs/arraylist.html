@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | arraylist.h</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/arraylist.h</h3>
+    <p>[since release@2020.1]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Resizable-array implementation of list! Implements all optional list operations and permits all elements including NULL!<br>
+        arraylist is <strong>not synchronized</strong>!<br>
+        Capacity of the list is doubled if array list is 100% filled!<br>
+        Capacity of the list is halved if array list is at most 25% filled!<br>
+        Theoretical maximum capacity of array list is INT_MAX (2,147,483,647 on most platforms)<br>
+        All memory allocation operations are done on heap!<br>
+        Insertion and deletion takes constant amortized time!<br>
+        Searching takes linear time!<br>
+        <strong>since release@2020.1</strong><br>
+        <a href="examples/arraylistexample.html">Example</a>
+    </p>
+</div>
+
+<div class="container" id="summary">
+    <h5 style="padding-top: 50px;"><strong>Function summary</strong></h5>
+    <pre><code class="c">
+/*allocates memory for new ArrayList with initial capacity*/
+/*returns a pointer to it if succeeds otherwise returns NULL*/
+/*asserts that initial capacity is a positive integer*/
+/*since release@2020.1*/
+ ArrayList* new_array_list(int initial_capacity);
+
+
+
+
+/*inserts the value at given index in ArrayList shifting the values to right*/
+/*resize the array if needed (to double size - if possible)*/
+/*asserts that list, list's array aren't NULL and index is in bound [0...N]*/
+/*insertion at index N => append operation*/
+/*returns true if operation succeeds otherwise returns false*/
+/*since release@2020.1*/
+ bool array_list_insert_at(ArrayList* list, void* value, int index);
+
+/*inserts the value at front of the ArrayList and returns true if succeeds otherwise returns false*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ bool array_list_insert_front(ArrayList* list, void* value);
+
+/*inserts the value at back of the ArrayList and returns true if succeeds otherwise returns false*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ bool array_list_insert_back(ArrayList* list, void* value);
+
+
+
+
+/*deletes the value at given index and returns value contained if succeeds otherwise returns NULL*/
+/*asserts that list, list's array are not NULL and index is in bound [0...N-1]*/
+/*since release@2020.1*/
+ void* array_list_delete_at(ArrayList* list, int index);
+
+/*returns and deletes the value at front if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_delete_front(ArrayList* list);
+
+/*returns and deletes the value at end if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_delete_back(ArrayList* list);
+
+/*deletes the 1st occurrence of key in ArrayList, returns true if deletion succeeds otherwise returns false*/
+/*optionally frees the memory for deleted element*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_delete(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd, bool freeListKey);
+
+/*deletes all occurrences of key in ArrayList, returns count of deleted items*/
+/*optionally frees the memory for deleted element*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ int array_list_delete_all(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd, bool freeListKeys);
+
+
+
+
+/*returns true if key exist in ArrayList otherwise returns false*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_contains(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+/*returns the index of 1st occurrence of key in ArrayList if exist otherwise returns -1*/
+/*optionally frees the memory allocated to key at the end*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ int array_list_indexOf(ArrayList* list, void* key, Comparator comparator, bool freeKeyAtEnd);
+
+
+/*returns the value at given index in ArrayList*/
+/*asserts that list, list's array are not NULL and index is in bound [0...N - 1]*/
+/*since release@2020.1*/
+ void* array_list_value_at(ArrayList* list, int index);
+
+/*returns the front item of the array list if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_front(ArrayList* list);
+
+/*returns the last item of the array list if exist otherwise returns NULL*/
+/*asserts that list, list's array are not NULL*/
+/*since release@2020.1*/
+ void* array_list_back(ArrayList* list);
+
+/*returns true if ArrayList is empty otherwise returns false*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ bool array_list_is_empty(ArrayList* list);
+
+/*returns the size of the ArrayList*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ int array_list_size(ArrayList* list);
+
+/*returns the capacity of the array list*/
+/*asserts that list is not NULL*/
+/*since release@2020.1*/
+ int array_list_capacity(ArrayList* list);
+
+/*returns true if both array list contains same elements - ignores difference in capacity (if any)*/
+/*asserts that lists, lists's arrays and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_equals(ArrayList* list1, ArrayList* list2, Comparator comparator);
+
+/*reverses the content of array list*/
+/*asserts that list, list's array aren't NULL*/
+/*since release@2020.1*/
+ void array_list_reverse(ArrayList* list);
+
+/*sorts the array list using merge sort algorithm and returns true if succeeds otherwise returns false*/
+/*asserts that list, list's array and callback aren't NULL*/
+/*since release@2020.1*/
+ bool array_list_sort(ArrayList* list, Comparator comparator);
+
+
+
+
+/*clear the content of array list and optionally frees the memory allocated to keys*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ void clear_array_list(ArrayList*  list, bool free_key);
+
+/*frees the memory allocate to array list and optionally frees the memory allocated to keys*/
+/*asserts that list and list's array are not NULL*/
+/*since release@2020.1*/
+ void free_array_list(ArrayList*  list, bool free_key);
+
+
+
+        
+/*returns an iterator for array list pointing to 1st node if succeeds otherwise returns NULL*/
+/*asserts that array list is not NULL*/
+/*since release@2020.1*/
+ ArrayListIterator* new_array_list_iterator(ArrayList* list);
+
+/*returns a pointer to an iterator for ArrayList pointing to last node if succeeds otherwise returns NULL*/
+/*assert that array list is not NULL*/
+/*since release@2020.1*/
+ ArrayListIterator* new_array_list_reverse_iterator(ArrayList* list);
+
+/*checks if array list iterator has a value*/
+/*assert that iterator and iterator's list are not NULL*/
+/*since release@2020.1*/
+ bool array_list_iterator_has_next(ArrayListIterator* iterator);
+
+/*checks if array list iterator has a value*/
+/*assert that iterator and iterator's list are not NULL*/
+/*since release@2020.1*/
+ bool array_list_iterator_has_previous(ArrayListIterator* iterator);
+
+/*returns the value of current node and update iterator to previous node*/
+/*asserts that iterator, iterator's list, iterator's list's array are not NULL and iterator's current current node is not  NULL*/
+/*since release@2020.1*/
+ void* array_list_iterator_next(ArrayListIterator* iterator);
+
+/*returns the value of current node and update iterator to previous node*/
+/*asserts that iterator, iterator's list, iterator's list's array are not NULL and iterator's current current node is not  NULL*/
+/*since release@2020.1*/
+ void* array_list_iterator_previous(ArrayListIterator* iterator);
+
+/*resets the iterator to appropriate node*/
+/*asserts that iterator, iterator's list are not NULL*/
+/*since release@2020.1*/
+ void reset_array_list_iterator(ArrayListIterator* iterator);
+
+/*frees the memory allocated to iterator*/
+/*asserts that input iterator is not NULL*/
+/*since release@2020.1*/
+ void free_array_list_iterator(ArrayListIterator* iterator);
+
+
+    </code></pre>
+</div>
+
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="license.txt">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>

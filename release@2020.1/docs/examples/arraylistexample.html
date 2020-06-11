@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta data -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set Title -->
+    <title>Utility Library | arraylist.h - Example</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="../icon.png" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- highlight js-->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- Styles -->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville&display=swap');
+        *{
+            font-family: 'Libre Baskerville', serif;
+        }
+        body{
+            background: white;
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3 style="padding-top: 50px;">utility/arraylist.h - Example</h3>
+    <p>[since release@2020.1]</p>
+    <h1 style="border: 0.5px solid black;"></h1>
+    <p>
+        Resizable-array implementation of list! Implements all optional list operations and permits all elements including NULL!<br>
+        arraylist is <strong>not synchronized</strong>!<br>
+        Capacity of the list is doubled if array list is 100% filled!<br>
+        Capacity of the list is halved if array list is at most 25% filled!<br>
+        Theoretical maximum capacity of array list is INT_MAX (2,147,483,647 on most platforms)<br>
+        All memory allocation operations are done on heap!<br>
+        Insertion and deletion takes constant amortized time!<br>
+        Searching takes linear time!<br>
+    </p>
+</div>
+
+<div class="container" id="example">
+    <pre><code>
+/*include necessary headers*/
+/*manipulate the path according to your system*/
+#include "../utility/release@2020.1/arraylist.h"
+#include "../utility/release@2020.1/wrapper.h"
+
+/*we define how our values to be compared*/
+/*returns 1, 0 or -1 if object1 is greater than, equals to or smaller than object2*/
+int arrayListTestComparator(const void* object1, const void* object2){
+    /*cast objects to their appropriate type - int in this case*/
+    int val1 = *((int*)object1);
+    int val2 = *((int*)object2);
+
+    /*compare values and return appropriate result*/
+    return (val1 > val2 ? 1 : val1 == val2 ? 0 : -1);
+}
+
+
+/*prints the content of ArrayList to console using iterators*/
+void printArrayList(ArrayList* arrayList){
+    /*create a new iterator for ArrayList*/
+    ArrayListIterator* iterator = new_array_list_iterator(arrayList);
+
+    /*iterate through list as long as we have values*/
+    while ( array_list_iterator_has_next(iterator) ){
+        /*get the current value and shift iterator to next node*/
+        void* value = array_list_iterator_next(iterator);
+
+        /*cast value to appropriate type - we have int*/
+        printf ("%d ", wrapped_int_value(value));
+    }
+
+    /*free memory allocated to ArrayListIterator on heap*/
+    free (iterator);
+
+    /*simply a next line*/
+    printf ("\n");
+}
+
+/*performs tests on array list*/
+void performArrayListTest(){
+    /*create a new array list with capacity of 10*/
+    ArrayList* arrayList = new_array_list(10);
+
+    /*insert 20 at front of ArrayList - note use of wrappers*/
+    array_list_insert_front(arrayList, wrap_int(20));
+
+    /*insert 10 at front of ArrayList - note use of wrappers*/
+    array_list_insert_front(arrayList, wrap_int(10));
+
+    /*insert 40 at back of ArrayList - note use of wrappers*/
+    array_list_insert_back(arrayList, wrap_int(40));
+
+    /*insert 30 at index 2 of ArrayList - note use of wrappers*/
+    array_list_insert_at(arrayList, wrap_int(30), 2);
+
+    /*print the content of ArrayList - NOT OFFERED BY LIBRARY*/
+    printArrayList(arrayList);
+
+    /*check if list contains the value 10*/
+    /*note we need to pass comparator because ArrayList contains void* */
+    /*so user has to define how he/she wants to compare values stored in ArrayList*/
+    /*also note that wrap_int(10) will allocate memory for one integer on heap*/
+    /*and therefore we pass freeKeyAtEnd to true so that this heap memory is freed*/
+    /*as search operation finishes*/
+    if ( array_list_contains(arrayList, wrap_int(10), arrayListTestComparator, true)){
+        printf ("ArrayList contains 10\n");
+    } else {
+        printf ("ArrayList do not contains 10\n");
+    }
+
+
+    /*reverse the content of ArrayList*/
+    array_list_reverse(arrayList);
+
+    /*print the content of ArrayList - NOT OFFERED BY LIBRARY*/
+    printf ("ReversedList: "); printArrayList(arrayList);
+
+    /*sort the ArrayList - internally uses MERGE SORT*/
+    /*once again we need to pass a comparator to define how we want our values to be compared*/
+    /*this can help us for sort by filter for example if we have a struct where we have*/
+    /* date, names, address, etc then we can pass different compartors*/
+    /*to sort list w.r.t different fields :-) */
+    array_list_sort(arrayList, arrayListTestComparator);
+
+    /*print the content of ArrayList - NOT OFFERED BY LIBRARY*/
+    printf ("SortedList: "); printArrayList(arrayList);
+
+    /*print the size and capacity of ArrayList to console*/
+    printf ("ArrayList's size: %d and ArrayList's capacity: %d\n",
+                        array_list_size(arrayList), array_list_capacity(arrayList));
+
+    /*insert some more data in list*/
+    for (int i = 50; i <= 150; i += 10)
+        array_list_insert_back(arrayList, wrap_int(i));
+
+    /*print the size and capacity of ArrayList to console*/
+    /*------------note the capacity will be doubled*/
+    printf ("ArrayList's size: %d and ArrayList's capacity: %d\n",
+            array_list_size(arrayList), array_list_capacity(arrayList));
+
+
+    /*delete the front value from ArrayList and unwrap the resulting integer*/
+    int val = unwrap_int(array_list_delete_front(arrayList));
+    printf ("Deleted %d\n", val);
+
+    /*free memory allocated to ArrayList*/
+    /*also delete memory allocated to all integers in list on heap*/
+    free_array_list(arrayList, true);
+    printf ("Freed arrayList :-)\n");
+
+    /*----arrayList not to be used after free operation on ArrayList*/
+}
+    </code></pre>
+</div>
+<div class="container">
+    <h5 style="padding-top: 50px;">Sample output</h5>
+    <div style="background: #F0F0F0; padding: 10px;">
+    10 20 30 40 <br>
+    ArrayList contains 10 <br>
+    ReversedList: 40 30 20 10 <br>
+    SortedList: 10 20 30 40 <br>
+    ArrayList's size: 4 and ArrayList's capacity: 10<br>
+    ArrayList's size: 15 and ArrayList's capacity: 20<br>
+    Deleted 10<br>
+    Freed arrayList :-)<br>
+    </div>
+</div>
+<div class="container">
+    <h1 style="border: 0.5px solid black; margin-top: 50px;"></h1>
+    <p style="text-align: center">
+        Copyright (C) 2020 <a  href="http://shubhampanchal.herokuapp.com">Shubham Panchal</a>- All rights reserved<br>
+        <a href="../license.txt">GNU General Public License</a>
+    </p>
+</div>
+</body>
+</html>
